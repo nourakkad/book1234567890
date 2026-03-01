@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --beige: #f5f0e8;
+  --beige-dark: #ebe5dc;
+  --navy: #1e3a5f;
+  --navy-light: #2c5282;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-arabic), system-ui, sans-serif;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+/* Hero parchment box fallback when images not loaded yet */
+.hero-parchment-fallback {
+  background-color: #e5dcc8;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
