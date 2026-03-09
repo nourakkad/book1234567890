@@ -40,6 +40,22 @@ export default function AdminPage() {
       });
   }, [authenticated, selectedSlug]);
 
+  const slugLabels: Record<string, string> = {
+    global: "عام",
+    home: "الرئيسية",
+    about: "عن الكاتب",
+    books: "الكتب",
+    reviews: "المراجعات",
+    articles: "المقالات",
+    videos: "الفيديوهات",
+    thoughts: "الخواطر",
+    contact: "تواصل معنا",
+    audioBooks: "الكتب الصوتية",
+    bookShow: "عرض الكتاب",
+    phenomenonAnalysis: "تحليل الظاهرة",
+    questions: "أسئلة وأجوبة",
+    works: "مؤلفاتي",
+  };
   const prettySlugs = useMemo(() => EDITABLE_SLUGS, []);
   const parsed = useMemo(() => {
     try {
@@ -54,7 +70,7 @@ export default function AdminPage() {
     return {};
   }, [parsed]);
 
-  const formSupportedSlugs = new Set(["global", "home", "about", "books", "reviews", "articles"]);
+  const formSupportedSlugs = new Set(["global", "home", "about", "books", "reviews", "articles", "videos", "thoughts", "audioBooks", "bookShow", "phenomenonAnalysis", "questions"]);
   const canUseForm = formSupportedSlugs.has(selectedSlug);
 
   function applyObject(next: Record<string, unknown>) {
@@ -111,7 +127,7 @@ export default function AdminPage() {
     file: File,
     folder: string,
     key: string,
-    kind: "image" | "pdf" = "image"
+    kind: "image" | "pdf" | "audio" = "image"
   ) {
     setMessage("");
     setUploadingKey(key);
@@ -214,7 +230,7 @@ export default function AdminPage() {
   }
 
   if (checking) {
-    return <div className="p-8 text-[#1e3a5f]">Loading...</div>;
+    return <div className="p-8 text-[#1e3a5f]">جاري التحميل...</div>;
   }
 
   if (!authenticated) {
@@ -283,7 +299,7 @@ export default function AdminPage() {
                     : "bg-[#f5f0e8] text-[#1e3a5f]"
                 }`}
               >
-                {slug}
+                {slugLabels[slug] ?? slug}
               </button>
             ))}
           </div>
@@ -303,7 +319,7 @@ export default function AdminPage() {
                     : "border border-[#d6cfc4] text-[#1e3a5f]"
                 } disabled:cursor-not-allowed disabled:opacity-40`}
               >
-                Form
+                نموذج
               </button>
               <button
                 type="button"
@@ -324,49 +340,94 @@ export default function AdminPage() {
               {selectedSlug === "global" ? (
                 <>
                   <LabeledInput
-                    label="Site Title"
+                    label="عنوان الموقع"
                     value={String(selectedData.siteTitle ?? "")}
                     onChange={(v) => updateTopLevelField("siteTitle", v)}
                   />
                   <LabeledTextarea
-                    label="Site Description"
+                    label="وصف الموقع"
                     value={String(selectedData.siteDescription ?? "")}
                     onChange={(v) => updateTopLevelField("siteDescription", v)}
                   />
                   <div className="grid gap-3 md:grid-cols-2">
                     <LabeledInput
-                      label="Nav Home"
+                      label="نص الشعار"
+                      value={String((isObject(selectedData.nav) ? selectedData.nav.logoText : "") ?? "")}
+                      onChange={(v) => updateNestedField(["nav", "logoText"], v)}
+                    />
+                    <LabeledInput
+                      label="نص الرئيسية"
                       value={String((isObject(selectedData.nav) ? selectedData.nav.home : "") ?? "")}
                       onChange={(v) => updateNestedField(["nav", "home"], v)}
                     />
                     <LabeledInput
-                      label="Nav About"
+                      label="نص مؤلفاتي"
+                      value={String((isObject(selectedData.nav) ? selectedData.nav.works : "") ?? "")}
+                      onChange={(v) => updateNestedField(["nav", "works"], v)}
+                    />
+                    <LabeledInput
+                      label="نص عن الكاتب"
                       value={String((isObject(selectedData.nav) ? selectedData.nav.about : "") ?? "")}
                       onChange={(v) => updateNestedField(["nav", "about"], v)}
                     />
                     <LabeledInput
-                      label="Nav Books"
+                      label="نص الكتب"
                       value={String((isObject(selectedData.nav) ? selectedData.nav.books : "") ?? "")}
                       onChange={(v) => updateNestedField(["nav", "books"], v)}
                     />
                     <LabeledInput
-                      label="Nav Articles"
+                      label="نص المنشورات"
                       value={String((isObject(selectedData.nav) ? selectedData.nav.articles : "") ?? "")}
                       onChange={(v) => updateNestedField(["nav", "articles"], v)}
                     />
                     <LabeledInput
-                      label="Footer Quick Links Title"
+                      label="نص الفيديوهات"
+                      value={String((isObject(selectedData.nav) ? selectedData.nav.videos : "") ?? "")}
+                      onChange={(v) => updateNestedField(["nav", "videos"], v)}
+                    />
+                    <LabeledInput
+                      label="نص الخواطر"
+                      value={String((isObject(selectedData.nav) ? selectedData.nav.thoughts : "") ?? "")}
+                      onChange={(v) => updateNestedField(["nav", "thoughts"], v)}
+                    />
+                    <LabeledInput
+                      label="نص تواصل معنا"
+                      value={String((isObject(selectedData.nav) ? selectedData.nav.contact : "") ?? "")}
+                      onChange={(v) => updateNestedField(["nav", "contact"], v)}
+                    />
+                    <LabeledInput
+                      label="نص الكتب الصوتية"
+                      value={String((isObject(selectedData.nav) ? selectedData.nav.audioBooks : "") ?? "")}
+                      onChange={(v) => updateNestedField(["nav", "audioBooks"], v)}
+                    />
+                    <LabeledInput
+                      label="نص عرض الكتاب"
+                      value={String((isObject(selectedData.nav) ? selectedData.nav.bookShow : "") ?? "")}
+                      onChange={(v) => updateNestedField(["nav", "bookShow"], v)}
+                    />
+                    <LabeledInput
+                      label="نص تحليل الظاهرة"
+                      value={String((isObject(selectedData.nav) ? selectedData.nav.phenomenonAnalysis : "") ?? "")}
+                      onChange={(v) => updateNestedField(["nav", "phenomenonAnalysis"], v)}
+                    />
+                    <LabeledInput
+                      label="نص أسئلة وأجوبة"
+                      value={String((isObject(selectedData.nav) ? selectedData.nav.questions : "") ?? "")}
+                      onChange={(v) => updateNestedField(["nav", "questions"], v)}
+                    />
+                    <LabeledInput
+                      label="عنوان روابط سريعة"
                       value={String((isObject(selectedData.footer) ? selectedData.footer.quickLinksTitle : "") ?? "")}
                       onChange={(v) => updateNestedField(["footer", "quickLinksTitle"], v)}
                     />
                     <LabeledInput
-                      label="Footer Follow Title"
+                      label="عنوان تابعني"
                       value={String((isObject(selectedData.footer) ? selectedData.footer.followTitle : "") ?? "")}
                       onChange={(v) => updateNestedField(["footer", "followTitle"], v)}
                     />
                   </div>
                   <LabeledInput
-                    label="Footer Copyright"
+                    label="حقوق النشر"
                     value={String((isObject(selectedData.footer) ? selectedData.footer.copyright : "") ?? "")}
                     onChange={(v) => updateNestedField(["footer", "copyright"], v)}
                   />
@@ -376,47 +437,47 @@ export default function AdminPage() {
               {selectedSlug === "home" ? (
                 <>
                   <LabeledInput
-                    label="Hero Badge"
+                    label="شارة البطل"
                     value={String(selectedData.heroBadge ?? "")}
                     onChange={(v) => updateTopLevelField("heroBadge", v)}
                   />
                   <LabeledInput
-                    label="Hero Title"
+                    label="عنوان البطل"
                     value={String(selectedData.heroTitle ?? "")}
                     onChange={(v) => updateTopLevelField("heroTitle", v)}
                   />
                   <LabeledTextarea
-                    label="Hero Text"
+                    label="نص البطل"
                     value={String(selectedData.heroText ?? "")}
                     onChange={(v) => updateTopLevelField("heroText", v)}
                   />
                   <LabeledInput
-                    label="Hero Subtext"
+                    label="النص الفرعي للبطل"
                     value={String(selectedData.heroSubtext ?? "")}
                     onChange={(v) => updateTopLevelField("heroSubtext", v)}
                   />
                   <LabeledInput
-                    label="CTA Title"
+                    label="عنوان الدعوة للإجراء"
                     value={String(selectedData.ctaTitle ?? "")}
                     onChange={(v) => updateTopLevelField("ctaTitle", v)}
                   />
                   <LabeledInput
-                    label="CTA Subtitle"
+                    label="العنوان الفرعي للدعوة"
                     value={String(selectedData.ctaSubtitle ?? "")}
                     onChange={(v) => updateTopLevelField("ctaSubtitle", v)}
                   />
                   <LabeledInput
-                    label="About Card Title"
+                    label="عنوان بطاقة التعريف"
                     value={String(selectedData.aboutTitle ?? "")}
                     onChange={(v) => updateTopLevelField("aboutTitle", v)}
                   />
                   <LabeledTextarea
-                    label="About Card Text"
+                    label="نص بطاقة التعريف"
                     value={String(selectedData.aboutText ?? "")}
                     onChange={(v) => updateTopLevelField("aboutText", v)}
                   />
                   <ImageUploadField
-                    label="Home About Image URL"
+                    label="رابط صورة التعريف في الرئيسية"
                     value={String(selectedData.aboutImageUrl ?? "")}
                     uploading={uploadingKey === "home-about-image"}
                     onChange={(v) => updateTopLevelField("aboutImageUrl", v)}
@@ -435,22 +496,22 @@ export default function AdminPage() {
               {selectedSlug === "about" ? (
                 <>
                   <LabeledInput
-                    label="Badge"
+                    label="الشارة"
                     value={String(selectedData.badge ?? "")}
                     onChange={(v) => updateTopLevelField("badge", v)}
                   />
                   <LabeledInput
-                    label="Title"
+                    label="العنوان"
                     value={String(selectedData.title ?? "")}
                     onChange={(v) => updateTopLevelField("title", v)}
                   />
                   <LabeledTextarea
-                    label="Intro"
+                    label="المقدمة"
                     value={String(selectedData.intro ?? "")}
                     onChange={(v) => updateTopLevelField("intro", v)}
                   />
                   <ImageUploadField
-                    label="Author Image URL"
+                    label="رابط صورة المؤلف"
                     value={String(selectedData.authorImageUrl ?? "")}
                     uploading={uploadingKey === "about-author-image"}
                     onChange={(v) => updateTopLevelField("authorImageUrl", v)}
@@ -464,7 +525,7 @@ export default function AdminPage() {
                     }}
                   />
                   <LabeledTextarea
-                    label="Role Paragraphs (one line per paragraph)"
+                    label="فقرات الدور (سطر واحد لكل فقرة)"
                     value={Array.isArray(selectedData.roleParagraphs) ? selectedData.roleParagraphs.join("\n") : ""}
                     onChange={(v) =>
                       updateTopLevelField(
@@ -483,49 +544,56 @@ export default function AdminPage() {
                 <>
                   <div className="grid gap-3 md:grid-cols-2">
                     <LabeledInput
-                      label="Section Title"
+                      label="عنوان القسم"
                       value={String(selectedData.sectionTitle ?? "")}
                       onChange={(v) => updateTopLevelField("sectionTitle", v)}
                     />
                     <LabeledInput
-                      label="Reviews Title"
+                      label="عنوان المراجعات"
                       value={String(selectedData.reviewsTitle ?? "")}
                       onChange={(v) => updateTopLevelField("reviewsTitle", v)}
                     />
                     <LabeledInput
-                      label="Book Detail Reviews Title"
+                      label="عنوان آراء الكتاب"
                       value={String(selectedData.bookDetailReviewsTitle ?? "")}
                       onChange={(v) => updateTopLevelField("bookDetailReviewsTitle", v)}
                     />
                     <LabeledInput
-                      label="Related Section Title"
+                      label="عنوان القسم ذو الصلة"
                       value={String(selectedData.relatedTitle ?? "")}
                       onChange={(v) => updateTopLevelField("relatedTitle", v)}
                     />
                   </div>
                   <LabeledTextarea
-                    label="Author Role Text"
+                    label="نص دور الكاتب"
                     value={String(selectedData.authorRoleText ?? "")}
                     onChange={(v) => updateTopLevelField("authorRoleText", v)}
                   />
 
                   <div className="mt-4 rounded-lg border border-[#e5e0d8] p-3">
                     <div className="mb-3 flex items-center justify-between">
-                      <p className="text-sm font-semibold text-[#1e3a5f]">Book Items</p>
+                      <p className="text-sm font-semibold text-[#1e3a5f]">عناصر الكتب</p>
                       <button
                         type="button"
-                        onClick={() =>
+                        onClick={() => {
+                          const existing = getTopArray("bookItems");
+                          const nextId =
+                            existing.length > 0
+                              ? Math.max(...existing.map((x: { id?: number }) => Number(x?.id ?? 0))) + 1
+                              : 1;
                           addTopArrayItem("bookItems", {
-                            id: Date.now(),
+                            id: nextId,
                             title: "اسم الكتاب",
+                            author: "",
                             category: "ثقافية",
                             desc: "وصف بسيط",
                             longDesc: "وصف تفصيلي",
+                            imageUrl: "",
                             pdfUrl: "",
                             relatedIds: [],
                             reviews: [],
-                          })
-                        }
+                          });
+                        }}
                         className="rounded-md border border-[#d6cfc4] px-3 py-1 text-sm text-[#1e3a5f]"
                       >
                         + إضافة كتاب
@@ -550,22 +618,27 @@ export default function AdminPage() {
                             </div>
                             <div className="grid gap-3 md:grid-cols-2">
                               <LabeledInput
-                                label="ID"
+                                label="المعرّف"
                                 value={String(item.id ?? "")}
                                 onChange={(v) => patchTopArrayItem("bookItems", index, { id: Number(v) || 0 })}
                               />
                               <LabeledInput
-                                label="Title"
+                                label="العنوان"
                                 value={String(item.title ?? "")}
                                 onChange={(v) => patchTopArrayItem("bookItems", index, { title: v })}
                               />
                               <LabeledInput
-                                label="Category"
+                                label="المؤلف"
+                                value={String(item.author ?? "")}
+                                onChange={(v) => patchTopArrayItem("bookItems", index, { author: v })}
+                              />
+                              <LabeledInput
+                                label="التصنيف"
                                 value={String(item.category ?? "")}
                                 onChange={(v) => patchTopArrayItem("bookItems", index, { category: v })}
                               />
                               <LabeledInput
-                                label="Related IDs (comma)"
+                                label="معرّفات ذات صلة (مفصولة بفاصلة)"
                                 value={relatedIds}
                                 onChange={(v) =>
                                   patchTopArrayItem("bookItems", index, {
@@ -578,17 +651,17 @@ export default function AdminPage() {
                               />
                             </div>
                             <LabeledTextarea
-                              label="Short Description"
+                              label="وصف مختصر"
                               value={String(item.desc ?? "")}
                               onChange={(v) => patchTopArrayItem("bookItems", index, { desc: v })}
                             />
                             <LabeledTextarea
-                              label="Long Description"
+                              label="وصف تفصيلي"
                               value={String(item.longDesc ?? "")}
                               onChange={(v) => patchTopArrayItem("bookItems", index, { longDesc: v })}
                             />
                             <ImageUploadField
-                              label="Image URL"
+                              label="رابط الصورة"
                               value={String(item.imageUrl ?? "")}
                               uploading={uploadingKey === `book-image-${index}`}
                               onChange={(v) => patchTopArrayItem("bookItems", index, { imageUrl: v })}
@@ -604,7 +677,7 @@ export default function AdminPage() {
                               }}
                             />
                             <FileUploadField
-                              label="PDF URL"
+                              label="رابط ملف PDF"
                               value={String(item.pdfUrl ?? "")}
                               accept=".pdf,application/pdf"
                               uploading={uploadingKey === `book-pdf-${index}`}
@@ -632,14 +705,14 @@ export default function AdminPage() {
               {selectedSlug === "reviews" ? (
                 <>
                   <LabeledInput
-                    label="Title"
+                    label="العنوان"
                     value={String(selectedData.title ?? "")}
                     onChange={(v) => updateTopLevelField("title", v)}
                   />
 
                   <div className="mt-4 rounded-lg border border-[#e5e0d8] p-3">
                     <div className="mb-3 flex items-center justify-between">
-                      <p className="text-sm font-semibold text-[#1e3a5f]">Reviews</p>
+                      <p className="text-sm font-semibold text-[#1e3a5f]">المراجعات</p>
                       <button
                         type="button"
                         onClick={() =>
@@ -660,7 +733,7 @@ export default function AdminPage() {
                         return (
                           <div key={index} className="rounded-lg border border-[#e5e0d8] p-3">
                             <div className="mb-2 flex items-center justify-between">
-                              <p className="text-sm font-semibold text-[#1e3a5f]">Review #{index + 1}</p>
+                              <p className="text-sm font-semibold text-[#1e3a5f]">مراجعة #{index + 1}</p>
                               <button
                                 type="button"
                                 onClick={() => removeTopArrayItem("items", index)}
@@ -670,18 +743,18 @@ export default function AdminPage() {
                               </button>
                             </div>
                             <LabeledTextarea
-                              label="Text"
+                              label="النص"
                               value={String(item.text ?? "")}
                               onChange={(v) => patchTopArrayItem("items", index, { text: v })}
                             />
                             <div className="grid gap-3 md:grid-cols-2">
                               <LabeledInput
-                                label="Likes"
+                                label="الإعجابات"
                                 value={String(item.likes ?? 0)}
                                 onChange={(v) => patchTopArrayItem("items", index, { likes: Number(v) || 0 })}
                               />
                               <LabeledInput
-                                label="Dislikes"
+                                label="عدم الإعجاب"
                                 value={String(item.dislikes ?? 0)}
                                 onChange={(v) => patchTopArrayItem("items", index, { dislikes: Number(v) || 0 })}
                               />
@@ -696,9 +769,83 @@ export default function AdminPage() {
 
               {selectedSlug === "articles" ? (
                 <>
+                  <LabeledInput
+                    label="عنوان صفحة المقالات"
+                    value={String(selectedData.title ?? "")}
+                    onChange={(v) => updateTopLevelField("title", v)}
+                  />
+                  <LabeledTextarea
+                    label="وصف صفحة المقالات"
+                    value={String(selectedData.description ?? "")}
+                    onChange={(v) => updateTopLevelField("description", v)}
+                  />
+
                   <div className="rounded-lg border border-[#e5e0d8] p-3">
                     <div className="mb-3 flex items-center justify-between">
-                      <p className="text-sm font-semibold text-[#1e3a5f]">Article Items</p>
+                      <p className="text-sm font-semibold text-[#1e3a5f]">التصنيفات</p>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          addTopArrayItem("categories", {
+                            id: `category-${Date.now()}`,
+                            label: "تصنيف جديد",
+                            featuredIds: [],
+                          })
+                        }
+                        className="rounded-md border border-[#d6cfc4] px-3 py-1 text-sm text-[#1e3a5f]"
+                      >
+                        + إضافة تصنيف
+                      </button>
+                    </div>
+                    <div className="space-y-4">
+                      {getTopArray("categories").map((rawItem, index) => {
+                        const item = isObject(rawItem) ? rawItem : {};
+                        const featuredIds = Array.isArray(item.featuredIds) ? item.featuredIds.join(", ") : "";
+                        return (
+                          <div key={index} className="rounded-lg border border-[#e5e0d8] p-3">
+                            <div className="mb-2 flex items-center justify-between">
+                              <p className="text-sm font-semibold text-[#1e3a5f]">تصنيف #{index + 1}</p>
+                              <button
+                                type="button"
+                                onClick={() => removeTopArrayItem("categories", index)}
+                                className="rounded-md border border-red-300 px-2 py-1 text-xs text-red-600"
+                              >
+                                حذف
+                              </button>
+                            </div>
+                            <div className="grid gap-3 md:grid-cols-2">
+                              <LabeledInput
+                                label="معرّف التصنيف"
+                                value={String(item.id ?? "")}
+                                onChange={(v) => patchTopArrayItem("categories", index, { id: v })}
+                              />
+                              <LabeledInput
+                                label="تسمية التصنيف"
+                                value={String(item.label ?? "")}
+                                onChange={(v) => patchTopArrayItem("categories", index, { label: v })}
+                              />
+                            </div>
+                            <LabeledInput
+                              label="معرّفات المقالات المميزة (مفصولة بفاصلة)"
+                              value={featuredIds}
+                              onChange={(v) =>
+                                patchTopArrayItem("categories", index, {
+                                  featuredIds: v
+                                    .split(",")
+                                    .map((x) => x.trim())
+                                    .filter(Boolean),
+                                })
+                              }
+                            />
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  <div className="rounded-lg border border-[#e5e0d8] p-3">
+                    <div className="mb-3 flex items-center justify-between">
+                      <p className="text-sm font-semibold text-[#1e3a5f]">عناصر المقالات</p>
                       <button
                         type="button"
                         onClick={() => {
@@ -711,6 +858,13 @@ export default function AdminPage() {
                             title: `عنوان المقال ${nextId}`,
                             date: "1-1-2026",
                             secondaryTitle: "عنوان ثانوي",
+                            categoryId: String(
+                              (Array.isArray(selectedData.categories) &&
+                              isObject(selectedData.categories[0]) &&
+                              selectedData.categories[0].id) ||
+                                ""
+                            ),
+                            author: "محمد النبي يوسف",
                           });
                         }}
                         className="rounded-md border border-[#d6cfc4] px-3 py-1 text-sm text-[#1e3a5f]"
@@ -726,7 +880,7 @@ export default function AdminPage() {
                           return (
                             <div key={id} className="rounded-lg border border-[#e5e0d8] p-3">
                               <div className="mb-2 flex items-center justify-between">
-                                <p className="text-sm font-semibold text-[#1e3a5f]">Article #{id}</p>
+                                <p className="text-sm font-semibold text-[#1e3a5f]">مقال #{id}</p>
                                 <button
                                   type="button"
                                   onClick={() => {
@@ -740,22 +894,32 @@ export default function AdminPage() {
                                 </button>
                               </div>
                               <LabeledInput
-                                label="Title"
+                                label="العنوان"
                                 value={String(item.title ?? "")}
                                 onChange={(v) => updateNestedField(["items", id, "title"], v)}
                               />
                               <LabeledInput
-                                label="Date"
+                                label="التاريخ"
                                 value={String(item.date ?? "")}
                                 onChange={(v) => updateNestedField(["items", id, "date"], v)}
                               />
+                              <LabeledInput
+                                label="معرّف التصنيف"
+                                value={String(item.categoryId ?? "")}
+                                onChange={(v) => updateNestedField(["items", id, "categoryId"], v)}
+                              />
+                              <LabeledInput
+                                label="المؤلف"
+                                value={String(item.author ?? "")}
+                                onChange={(v) => updateNestedField(["items", id, "author"], v)}
+                              />
                               <LabeledTextarea
-                                label="Secondary Title"
+                                label="العنوان الفرعي"
                                 value={String(item.secondaryTitle ?? "")}
                                 onChange={(v) => updateNestedField(["items", id, "secondaryTitle"], v)}
                               />
                               <ImageUploadField
-                                label="Main Image URL"
+                                label="رابط الصورة الرئيسية"
                                 value={String(item.imageUrl ?? "")}
                                 uploading={uploadingKey === `article-main-${id}`}
                                 onChange={(v) => updateNestedField(["items", id, "imageUrl"], v)}
@@ -771,7 +935,7 @@ export default function AdminPage() {
                                 }}
                               />
                               <ImageUploadField
-                                label="Secondary Image URL"
+                                label="رابط الصورة الثانوية"
                                 value={String(item.secondaryImageUrl ?? "")}
                                 uploading={uploadingKey === `article-secondary-${id}`}
                                 onChange={(v) => updateNestedField(["items", id, "secondaryImageUrl"], v)}
@@ -793,12 +957,491 @@ export default function AdminPage() {
                   </div>
                 </>
               ) : null}
+
+              {selectedSlug === "videos" ? (
+                <>
+                  <LabeledInput
+                    label="عنوان صفحة الفيديوهات"
+                    value={String(selectedData.title ?? "")}
+                    onChange={(v) => updateTopLevelField("title", v)}
+                  />
+                  <LabeledTextarea
+                    label="وصف صفحة الفيديوهات"
+                    value={String(selectedData.description ?? "")}
+                    onChange={(v) => updateTopLevelField("description", v)}
+                  />
+
+                  <div className="rounded-lg border border-[#e5e0d8] p-3">
+                    <div className="mb-3 flex items-center justify-between">
+                      <p className="text-sm font-semibold text-[#1e3a5f]">عناصر الفيديوهات</p>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          addTopArrayItem("items", {
+                            title: "عنوان الفيديو عنوان الفيديو عنوان الفيديو",
+                            sourceLabel: "مشاهدة على اليوتيوب",
+                            videoUrl: "",
+                            thumbnailUrl: "",
+                          })
+                        }
+                        className="rounded-md border border-[#d6cfc4] px-3 py-1 text-sm text-[#1e3a5f]"
+                      >
+                        + إضافة فيديو
+                      </button>
+                    </div>
+
+                    <div className="space-y-4">
+                      {getTopArray("items").map((rawItem, index) => {
+                        const item = isObject(rawItem) ? rawItem : {};
+                        return (
+                          <div key={index} className="rounded-lg border border-[#e5e0d8] p-3">
+                            <div className="mb-2 flex items-center justify-between">
+                              <p className="text-sm font-semibold text-[#1e3a5f]">فيديو #{index + 1}</p>
+                              <button
+                                type="button"
+                                onClick={() => removeTopArrayItem("items", index)}
+                                className="rounded-md border border-red-300 px-2 py-1 text-xs text-red-600"
+                              >
+                                حذف
+                              </button>
+                            </div>
+
+                            <LabeledInput
+                              label="العنوان"
+                              value={String(item.title ?? "")}
+                              onChange={(v) => patchTopArrayItem("items", index, { title: v })}
+                            />
+                            <LabeledInput
+                              label="تسمية المصدر"
+                              value={String(item.sourceLabel ?? "")}
+                              onChange={(v) => patchTopArrayItem("items", index, { sourceLabel: v })}
+                            />
+                            <LabeledInput
+                              label="رابط الفيديو"
+                              value={String(item.videoUrl ?? "")}
+                              onChange={(v) => patchTopArrayItem("items", index, { videoUrl: v })}
+                            />
+                            <ImageUploadField
+                              label="رابط الصورة المصغرة"
+                              value={String(item.thumbnailUrl ?? "")}
+                              uploading={uploadingKey === `video-thumb-${index}`}
+                              onChange={(v) => patchTopArrayItem("items", index, { thumbnailUrl: v })}
+                              onUpload={async (file) => {
+                                const url = await uploadFile(file, "videos", `video-thumb-${index}`, "image");
+                                if (url) patchTopArrayItem("items", index, { thumbnailUrl: url });
+                              }}
+                              onDelete={async () => {
+                                const current = String(item.thumbnailUrl ?? "");
+                                if (await deleteUploadedFile(current)) {
+                                  patchTopArrayItem("items", index, { thumbnailUrl: "" });
+                                }
+                              }}
+                            />
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </>
+              ) : null}
+
+              {selectedSlug === "thoughts" ? (
+                <>
+                  <LabeledInput
+                    label="عنوان صفحة الخواطر"
+                    value={String(selectedData.title ?? "")}
+                    onChange={(v) => updateTopLevelField("title", v)}
+                  />
+                  <LabeledTextarea
+                    label="وصف صفحة الخواطر"
+                    value={String(selectedData.description ?? "")}
+                    onChange={(v) => updateTopLevelField("description", v)}
+                  />
+
+                  <div className="rounded-lg border border-[#e5e0d8] p-3">
+                    <div className="mb-3 flex items-center justify-between">
+                      <p className="text-sm font-semibold text-[#1e3a5f]">عناصر الخواطر</p>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          addTopArrayItem("items", {
+                            text: "خاطرة جديدة",
+                          })
+                        }
+                        className="rounded-md border border-[#d6cfc4] px-3 py-1 text-sm text-[#1e3a5f]"
+                      >
+                        + إضافة خاطرة
+                      </button>
+                    </div>
+
+                    <div className="space-y-4">
+                      {getTopArray("items").map((rawItem, index) => {
+                        const item = isObject(rawItem) ? rawItem : {};
+                        return (
+                          <div key={index} className="rounded-lg border border-[#e5e0d8] p-3">
+                            <div className="mb-2 flex items-center justify-between">
+                              <p className="text-sm font-semibold text-[#1e3a5f]">خاطرة #{index + 1}</p>
+                              <button
+                                type="button"
+                                onClick={() => removeTopArrayItem("items", index)}
+                                className="rounded-md border border-red-300 px-2 py-1 text-xs text-red-600"
+                              >
+                                حذف
+                              </button>
+                            </div>
+
+                            <LabeledTextarea
+                              label="النص"
+                              value={String(item.text ?? "")}
+                              onChange={(v) => patchTopArrayItem("items", index, { text: v })}
+                            />
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </>
+              ) : null}
+
+              {selectedSlug === "audioBooks" ? (
+                <>
+                  <LabeledInput
+                    label="عنوان صفحة الكتب الصوتية"
+                    value={String(selectedData.title ?? "")}
+                    onChange={(v) => updateTopLevelField("title", v)}
+                  />
+                  <LabeledTextarea
+                    label="وصف صفحة الكتب الصوتية"
+                    value={String(selectedData.description ?? "")}
+                    onChange={(v) => updateTopLevelField("description", v)}
+                  />
+
+                  <div className="rounded-lg border border-[#e5e0d8] p-3">
+                    <div className="mb-3 flex items-center justify-between">
+                      <p className="text-sm font-semibold text-[#1e3a5f]">عناصر الكتب الصوتية</p>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const existing = getTopArray("items");
+                          const nextId = existing.length > 0
+                            ? Math.max(...existing.map((x: { id?: number }) => Number(x?.id ?? 0))) + 1
+                            : 1;
+                          addTopArrayItem("items", {
+                            id: nextId,
+                            title: "تحرير العقل من النقل",
+                            author: "سامر اسلامبولی",
+                            description: "وقرابة القدية المجموعة من احاديث . البخاري ومسلم",
+                            imageUrl: "",
+                            audioUrl: "",
+                          });
+                        }}
+                        className="rounded-md border border-[#d6cfc4] px-3 py-1 text-sm text-[#1e3a5f]"
+                      >
+                        + إضافة كتاب صوتي
+                      </button>
+                    </div>
+
+                    <div className="space-y-4">
+                      {getTopArray("items").map((rawItem, index) => {
+                        const item = isObject(rawItem) ? rawItem : {};
+                        return (
+                          <div key={index} className="rounded-lg border border-[#e5e0d8] p-3">
+                            <div className="mb-2 flex items-center justify-between">
+                              <p className="text-sm font-semibold text-[#1e3a5f]">
+                                كتاب صوتي #{index + 1} (معرّف: {String(item.id ?? index + 1)})
+                              </p>
+                              <button
+                                type="button"
+                                onClick={() => removeTopArrayItem("items", index)}
+                                className="rounded-md border border-red-300 px-2 py-1 text-xs text-red-600"
+                              >
+                                حذف
+                              </button>
+                            </div>
+
+                            <LabeledInput
+                              label="العنوان"
+                              value={String(item.title ?? "")}
+                              onChange={(v) => patchTopArrayItem("items", index, { title: v })}
+                            />
+                            <LabeledInput
+                              label="المؤلف"
+                              value={String(item.author ?? "")}
+                              onChange={(v) => patchTopArrayItem("items", index, { author: v })}
+                            />
+                            <LabeledTextarea
+                              label="الوصف"
+                              value={String(item.description ?? "")}
+                              onChange={(v) => patchTopArrayItem("items", index, { description: v })}
+                            />
+                            <ImageUploadField
+                              label="صورة الغلاف"
+                              value={String(item.imageUrl ?? "")}
+                              uploading={uploadingKey === `audio-book-cover-${index}`}
+                              onChange={(v) => patchTopArrayItem("items", index, { imageUrl: v })}
+                              onUpload={async (file) => {
+                                const url = await uploadFile(file, "audio-books", `audio-book-cover-${index}`, "image");
+                                if (url) patchTopArrayItem("items", index, { imageUrl: url });
+                              }}
+                              onDelete={async () => {
+                                const current = String(item.imageUrl ?? "");
+                                if (await deleteUploadedFile(current)) {
+                                  patchTopArrayItem("items", index, { imageUrl: "" });
+                                }
+                              }}
+                            />
+                            <FileUploadField
+                              label="رابط الملف الصوتي"
+                              value={String(item.audioUrl ?? "")}
+                              onChange={(v) => patchTopArrayItem("items", index, { audioUrl: v })}
+                              onUpload={async (file) => {
+                                const url = await uploadFile(file, "audio-books", `audio-book-file-${index}`, "audio");
+                                if (url) patchTopArrayItem("items", index, { audioUrl: url });
+                              }}
+                              onDelete={async () => {
+                                const current = String(item.audioUrl ?? "");
+                                if (await deleteUploadedFile(current)) {
+                                  patchTopArrayItem("items", index, { audioUrl: "" });
+                                }
+                              }}
+                              uploading={uploadingKey === `audio-book-file-${index}`}
+                              accept="audio/*,video/mp4"
+                              uploadLabel="رفع ملف صوتي"
+                            />
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </>
+              ) : null}
+
+              {selectedSlug === "bookShow" ? (
+                <>
+                  <LabeledInput
+                    label="عنوان صفحة عرض الكتاب"
+                    value={String(selectedData.title ?? "")}
+                    onChange={(v) => updateTopLevelField("title", v)}
+                  />
+                  <LabeledTextarea
+                    label="وصف صفحة عرض الكتاب"
+                    value={String(selectedData.description ?? "")}
+                    onChange={(v) => updateTopLevelField("description", v)}
+                  />
+                  <div className="rounded-lg border border-[#e5e0d8] p-3">
+                    <p className="mb-3 text-sm font-semibold text-[#1e3a5f]">
+                      اختر الكتب المعروضة في صفحة عرض الكتاب
+                    </p>
+                    <p className="mb-3 text-xs text-[#1e3a5f]/70">
+                      حدد الكتب التي تريد عرضها في صفحة &quot;عرض الكتاب&quot;. الكتب تأتي من قائمة الكتب في صفحة الكتب.
+                    </p>
+                    {(() => {
+                      const booksData = content.books as { bookItems?: { id: number; title?: string }[] } | undefined;
+                      const bookItems = booksData?.bookItems ?? [];
+                      const selectedIds = Array.isArray(selectedData.selectedBookIds)
+                        ? (selectedData.selectedBookIds as number[])
+                        : [];
+                      function toggleBookId(id: number) {
+                        const next = selectedIds.includes(id)
+                          ? selectedIds.filter((x) => x !== id)
+                          : [...selectedIds, id].sort((a, b) => a - b);
+                        updateTopLevelField("selectedBookIds", next);
+                      }
+                      return (
+                        <div className="flex flex-wrap gap-2">
+                          {bookItems.length === 0 ? (
+                            <p className="text-sm text-[#1e3a5f]/70">
+                              لا توجد كتب. أضف كتباً من صفحة &quot;الكتب&quot; أولاً.
+                            </p>
+                          ) : (
+                            bookItems.map((b) => (
+                              <label
+                                key={b.id}
+                                className="flex cursor-pointer items-center gap-2 rounded-lg border border-[#d6cfc4] px-3 py-2 text-sm text-[#1e3a5f] hover:bg-[#faf8f5]"
+                              >
+                                <input
+                                  type="checkbox"
+                                  checked={selectedIds.includes(b.id)}
+                                  onChange={() => toggleBookId(b.id)}
+                                />
+                                <span>
+                                  {b.title ?? `كتاب #${b.id}`} (معرّف: {b.id})
+                                </span>
+                              </label>
+                            ))
+                          )}
+                        </div>
+                      );
+                    })()}
+                  </div>
+                </>
+              ) : null}
+
+              {selectedSlug === "phenomenonAnalysis" ? (
+                <>
+                  <LabeledInput
+                    label="عنوان صفحة تحليل الظاهرة"
+                    value={String(selectedData.title ?? "")}
+                    onChange={(v) => updateTopLevelField("title", v)}
+                  />
+                  <LabeledTextarea
+                    label="وصف صفحة تحليل الظاهرة"
+                    value={String(selectedData.description ?? "")}
+                    onChange={(v) => updateTopLevelField("description", v)}
+                  />
+                  <div className="rounded-lg border border-[#e5e0d8] p-3">
+                    <div className="mb-3 flex items-center justify-between">
+                      <p className="text-sm font-semibold text-[#1e3a5f]">عناصر تحليل الظاهرة</p>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const existing = getTopArray("items");
+                          const nextId =
+                            existing.length > 0
+                              ? Math.max(...existing.map((x: { id?: number }) => Number(x?.id ?? 0))) + 1
+                              : 1;
+                          addTopArrayItem("items", {
+                            id: nextId,
+                            title: "قصة النبي يوسف",
+                            imageUrl: "",
+                            description: "",
+                          });
+                        }}
+                        className="rounded-md border border-[#d6cfc4] px-3 py-1 text-sm text-[#1e3a5f]"
+                      >
+                        + إضافة تحليل
+                      </button>
+                    </div>
+                    <div className="space-y-4">
+                      {getTopArray("items").map((rawItem, index) => {
+                        const item = isObject(rawItem) ? rawItem : {};
+                        return (
+                          <div key={index} className="rounded-lg border border-[#e5e0d8] p-3">
+                            <div className="mb-2 flex items-center justify-between">
+                              <p className="text-sm font-semibold text-[#1e3a5f]">
+                                تحليل #{index + 1} (معرّف: {String(item.id ?? index + 1)})
+                              </p>
+                              <button
+                                type="button"
+                                onClick={() => removeTopArrayItem("items", index)}
+                                className="rounded-md border border-red-300 px-2 py-1 text-xs text-red-600"
+                              >
+                                حذف
+                              </button>
+                            </div>
+                            <LabeledInput
+                              label="العنوان"
+                              value={String(item.title ?? "")}
+                              onChange={(v) => patchTopArrayItem("items", index, { title: v })}
+                            />
+                            <div>
+                              <LabeledTextarea
+                                label="الوصف (استخدم ## للعناوين الفرعية و - للقوائم)"
+                                value={String(item.description ?? "")}
+                                onChange={(v) => patchTopArrayItem("items", index, { description: v })}
+                              />
+                              <p className="mt-1 text-xs text-[#1e3a5f]/60">
+                                مثال: ## عنوان فرعي ثم فقرة. - عنصر قائمة
+                              </p>
+                            </div>
+                            <ImageUploadField
+                              label="رابط الصورة"
+                              value={String(item.imageUrl ?? "")}
+                              uploading={uploadingKey === `phenomenon-image-${index}`}
+                              onChange={(v) => patchTopArrayItem("items", index, { imageUrl: v })}
+                              onUpload={async (file) => {
+                                const url = await uploadFile(file, "phenomenon-analysis", `phenomenon-image-${index}`, "image");
+                                if (url) patchTopArrayItem("items", index, { imageUrl: url });
+                              }}
+                              onDelete={async () => {
+                                const current = String(item.imageUrl ?? "");
+                                if (await deleteUploadedFile(current)) {
+                                  patchTopArrayItem("items", index, { imageUrl: "" });
+                                }
+                              }}
+                            />
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </>
+              ) : null}
+
+              {selectedSlug === "questions" ? (
+                <>
+                  <LabeledInput
+                    label="عنوان صفحة الأسئلة"
+                    value={String(selectedData.title ?? "")}
+                    onChange={(v) => updateTopLevelField("title", v)}
+                  />
+                  <LabeledTextarea
+                    label="وصف صفحة الأسئلة"
+                    value={String(selectedData.description ?? "")}
+                    onChange={(v) => updateTopLevelField("description", v)}
+                  />
+                  <div className="rounded-lg border border-[#e5e0d8] p-3">
+                    <div className="mb-3 flex items-center justify-between">
+                      <p className="text-sm font-semibold text-[#1e3a5f]">عناصر الأسئلة والأجوبة</p>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const existing = getTopArray("items");
+                          const nextId =
+                            existing.length > 0
+                              ? Math.max(...existing.map((x: { id?: number }) => Number(x?.id ?? 0))) + 1
+                              : 1;
+                          addTopArrayItem("items", {
+                            id: nextId,
+                            question: "مثال على السؤال",
+                            answer: "",
+                          });
+                        }}
+                        className="rounded-md border border-[#d6cfc4] px-3 py-1 text-sm text-[#1e3a5f]"
+                      >
+                        + إضافة سؤال
+                      </button>
+                    </div>
+                    <div className="space-y-4">
+                      {getTopArray("items").map((rawItem, index) => {
+                        const item = isObject(rawItem) ? rawItem : {};
+                        return (
+                          <div key={index} className="rounded-lg border border-[#e5e0d8] p-3">
+                            <div className="mb-2 flex items-center justify-between">
+                              <p className="text-sm font-semibold text-[#1e3a5f]">
+                                سؤال #{index + 1} (معرّف: {String(item.id ?? index + 1)})
+                              </p>
+                              <button
+                                type="button"
+                                onClick={() => removeTopArrayItem("items", index)}
+                                className="rounded-md border border-red-300 px-2 py-1 text-xs text-red-600"
+                              >
+                                حذف
+                              </button>
+                            </div>
+                            <LabeledInput
+                              label="السؤال"
+                              value={String(item.question ?? "")}
+                              onChange={(v) => patchTopArrayItem("items", index, { question: v })}
+                            />
+                            <LabeledTextarea
+                              label="الإجابة"
+                              value={String(item.answer ?? "")}
+                              onChange={(v) => patchTopArrayItem("items", index, { answer: v })}
+                            />
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </>
+              ) : null}
             </div>
           ) : (
             <div>
               {!canUseForm && editorMode === "form" ? (
                 <p className="mb-3 rounded-lg bg-[#f5f0e8] px-3 py-2 text-sm text-[#1e3a5f]">
-                  Form mode is currently available for: global, home, about, books, reviews, articles. Use JSON mode for other slugs.
+                  وضع النموذج متاح حاليًا لـ: عام، الرئيسية، عن الكاتب، الكتب، المراجعات، المقالات، الفيديوهات، الخواطر، الكتب الصوتية، عرض الكتاب، تحليل الظاهرة، أسئلة وأجوبة. استخدم وضع JSON للصفحات الأخرى.
                 </p>
               ) : null}
               <textarea

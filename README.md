@@ -11,6 +11,23 @@ pnpm dev
 
 Open `http://localhost:3000`.
 
+### Seeding the database
+
+To populate MongoDB with default content:
+
+```bash
+# Ensure .env.local has MONGODB_URI and MONGODB_DB
+pnpm run seed
+```
+
+To generate a secure admin password:
+
+```bash
+pnpm run seed:admin-pass
+```
+
+Note: The seed script (`scripts/seed.mjs`) uses `tsx` to import TypeScript modules.
+
 ## Deploy to Netlify
 
 This project is configured for Netlify using `@netlify/plugin-nextjs` and `netlify.toml`.

@@ -4,7 +4,8 @@ import path from "node:path";
 import { randomUUID } from "node:crypto";
 import { isAdminAuthenticated } from "@/lib/adminAuth";
 
-const MAX_SIZE_BYTES = 8 * 1024 * 1024; // 8 MB
+const MAX_SIZE_IMAGE_PDF = 8 * 1024 * 1024; // 8 MB
+const MAX_SIZE_AUDIO = 50 * 1024 * 1024; // 50 MB
 
 function sanitizeFolder(folder: string) {
   return folder.replace(/[^a-zA-Z0-9_-]/g, "");
@@ -33,20 +34,35 @@ export async function POST(req: Request) {
   const ext = getExtension(file.name);
   const isImage = file.type.startsWith("image/");
   const isPdf = file.type === "application/pdf" || ext === "pdf";
+  const isAudio =
+    file.type.startsWith("audio/") ||
+    file.type === "video/mp4" ||
+    ["mp3", "m4a", "mp4", "ogg", "wav", "webm"].includes(ext);
 
   if (kind === "pdf" && !isPdf) {
     return NextResponse.json({ ok: false, message: "Only PDF files are allowed" }, { status: 400 });
   }
-
-  if (kind !== "pdf" && !isImage) {
+  if (kind === "audio" && !isAudio) {
+    return NextResponse.json(
+      { ok: false, message: "Only audio files are allowed (e.g. mp3, m4a, mp4)" },
+      { status: 400 }
+    );
+  }
+  if (kind !== "pdf" && kind !== "audio" && !isImage) {
     return NextResponse.json({ ok: false, message: "Only image files are allowed" }, { status: 400 });
   }
 
-  if (file.size > MAX_SIZE_BYTES) {
-    return NextResponse.json({ ok: false, message: "File is too large (max 8MB)" }, { status: 400 });
+  const maxSize = kind === "audio" ? MAX_SIZE_AUDIO : MAX_SIZE_IMAGE_PDF;
+  if (file.size > maxSize) {
+    const maxMB = kind === "audio" ? 50 : 8;
+    return NextResponse.json(
+      { ok: false, message: `File is too large (max ${maxMB}MB)` },
+      { status: 400 }
+    );
   }
 
-  const safeExt = ext || (kind === "pdf" ? "pdf" : "png");
+  const safeExt =
+    ext || (kind === "pdf" ? "pdf" : kind === "audio" ? "mp3" : "png");
   const fileName = `${Date.now()}-${randomUUID()}.${safeExt}`;
   const relativeDir = path.join("uploads", folder);
   const absoluteDir = path.join(process.cwd(), "public", relativeDir);

@@ -6,46 +6,50 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import { useContentBySlug } from "@/lib/content/useContentBySlug";
 
-type BookReview = { text: string; likes: number; views: number };
 type BookItem = {
   id: number;
   title: string;
+  author?: string;
   category: string;
   desc: string;
   imageUrl?: string;
   pdfUrl?: string;
   longDesc?: string;
-  reviews?: BookReview[];
   relatedIds?: number[];
 };
 
 type BooksContent = {
-  bookDetailReviewsTitle?: string;
-  relatedTitle?: string;
   bookItems?: BookItem[];
+};
+
+type ArticleItem = {
+  title?: string;
+  imageUrl?: string;
+};
+
+type ArticlesContent = {
+  items?: Record<string, ArticleItem>;
 };
 
 const FALLBACK_ITEMS: BookItem[] = [
   {
     id: 1,
-    title: "اسم الكتاب",
+    title: "أسطورة نزول المسيح أو شبهه أو ظهور المهدي",
     category: "ثقافية",
-    desc: "وصف بسيط عن الكتاب وصف بسيط عن الكتاب وصف بسيط عن الكتاب",
+    desc: "كتاب يناقش عدداً من المفاهيم الشائعة.",
     pdfUrl: "",
     longDesc:
-      "وصف الكتاب وصف الكتاب وصف الكتاب وصف الكتاب وصف الكتاب وصف الكتاب وصف الكتاب وصف الكتاب وصف الكتاب.",
-    reviews: [{ text: "هذا الكتاب رائع يتحدث عن الثقافة والوعي", likes: 455, views: 45 }],
+      "يتناول هذا الكتاب ما يلي:\nمفهوم نزول المسيح إلى السماء.\nمفهوم عودة النبي عيسى عند النصارى.\nبقاء روح النبي الميت وليس النوم.\nالنبي ليس كأي شيء مخلوق مثل سائر الناس.\nهل رفع المسيح كان ذات الغيب بعينه؟\nهل هو الآن في السماء أم في الأرض؟",
     relatedIds: [2, 3, 4],
   },
   {
     id: 2,
-    title: "اسم الكتاب",
+    title: "العمران بين السلم والخراب",
     category: "ثقافية",
-    desc: "وصف بسيط عن الكتاب وصف بسيط عن الكتاب وصف بسيط عن الكتاب",
+    desc: "قراءة فكرية في بنية العمران.",
     pdfUrl: "",
     longDesc:
       "الكتاب يقدم أفكاراً جديدة ويعالج قضايا إنسانية بعمق وسلاسة في السرد والتعبير.",
-    reviews: [{ text: "كتاب ممتع وأسلوبه سلس", likes: 220, views: 31 }],
     relatedIds: [1, 3, 5],
   },
 ];
@@ -54,9 +58,10 @@ export default function BookDetailPage() {
   const params = useParams();
   const currentId = Number(params.id ?? 1);
   const booksContent = useContentBySlug<BooksContent>("books", {
-    bookDetailReviewsTitle: "آراء عن هذا الكتاب",
-    relatedTitle: "كتب ذات صلة",
     bookItems: FALLBACK_ITEMS,
+  });
+  const articlesContent = useContentBySlug<ArticlesContent>("articles", {
+    items: {},
   });
 
   const items = booksContent.bookItems && booksContent.bookItems.length > 0
@@ -64,204 +69,156 @@ export default function BookDetailPage() {
     : FALLBACK_ITEMS;
 
   const book = items.find((b) => b.id === currentId) ?? items[0];
-  const reviews = book?.reviews && book.reviews.length > 0
-    ? book.reviews
-    : [{ text: "هذا الكتاب رائع يتحدث عن الثقافة والوعي", likes: 455, views: 45 }];
-  const related = items
-    .filter((b) =>
-      (book?.relatedIds && book.relatedIds.length > 0
-        ? book.relatedIds.includes(b.id)
-        : b.id !== book?.id))
-    .filter((b) => b.id !== book?.id)
-    .slice(0, 6);
+  const detailLines = (book?.longDesc ?? book?.desc ?? "وصف الكتاب")
+    .split(/[\n\r]+|[.،]/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+  const articleEntries = Object.entries(articlesContent.items ?? {}).sort(([a], [b]) => Number(a) - Number(b));
+  const relatedPosts = Array.from({ length: 6 }, (_, index) => {
+    const item = articleEntries[index % Math.max(articleEntries.length, 1)]?.[1];
+    return {
+      id: index + 1,
+      title: item?.title ?? "منشورات قرآنية",
+      imageUrl: item?.imageUrl ?? "",
+      author: "قصة النبي يوسف",
+    };
+  });
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#f5f5f5]">
       <Header />
 
-      {/* Main book details */}
+      <section className="px-6 py-10 md:py-14">
+        <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[360px_1fr] lg:items-start">
+          <div className="mx-auto w-full max-w-[300px]">
+            <div className="aspect-[3/4] overflow-hidden rounded-[2px] bg-white shadow-[0_12px_28px_rgba(0,0,0,0.2)]">
+              {book?.imageUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={book.imageUrl} alt={book.title} className="h-full w-full object-cover" />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center bg-[linear-gradient(180deg,#5f79b5,#c6cde2)] px-8 text-center text-xl font-bold text-white">
+                  {book?.title ?? "اسم الكتاب"}
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="rounded-xl bg-white px-6 py-5 shadow-[0_8px_20px_rgba(0,0,0,0.12)] md:px-8">
+            <h1 className="mb-5 text-right text-3xl font-bold text-[#0d6f95] md:text-4xl">
+              {book?.title ?? "اسم الكتاب"}
+            </h1>
+
+            <div className="mb-5 flex flex-wrap justify-end gap-4">
+              <a
+                href={book?.pdfUrl || "#"}
+                target={book?.pdfUrl ? "_blank" : undefined}
+                rel={book?.pdfUrl ? "noreferrer" : undefined}
+                className="inline-flex min-w-40 items-center justify-center gap-2 rounded-xl bg-[#f1f1f1] px-5 py-2 text-sm text-[#0d6f95] shadow"
+              >
+                <ReadIcon className="size-4" />
+                تصفح الكتاب
+              </a>
+              <a
+                href={book?.pdfUrl || "#"}
+                target={book?.pdfUrl ? "_blank" : undefined}
+                rel={book?.pdfUrl ? "noreferrer" : undefined}
+                className="inline-flex min-w-40 items-center justify-center gap-2 rounded-xl bg-[#f1f1f1] px-5 py-2 text-sm text-[#0d6f95] shadow"
+              >
+                <DownloadIcon className="size-4" />
+                تحميل الكتاب
+              </a>
+            </div>
+
+            <ul className="space-y-3 text-right text-base leading-8 text-[#0d6f95]">
+              {detailLines.map((line, index) => (
+                <li key={index}>{line}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-[#f5f5f5]">
+        <FanDivider />
+      </section>
+
       <section className="px-6 py-12">
         <div className="mx-auto max-w-6xl">
-          <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
-            <div className="flex justify-center lg:justify-start">
-              <div className="w-full max-w-sm">
-                <div className="aspect-[3/4] overflow-hidden rounded-xl bg-[#e5e0d8]">
-                  {book?.imageUrl ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={book.imageUrl} alt={book.title} className="h-full w-full object-cover" />
-                  ) : (
-                    <div className="flex h-full w-full items-center justify-center text-[#1e3a5f]/50 text-sm">
-                      غلاف الكتاب
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <h1 className="mb-4 text-3xl font-bold text-[#1e3a5f] md:text-4xl">
-                {book?.title ?? "اسم الكتاب"}
-              </h1>
-              <p className="mb-6 leading-relaxed text-[#1e3a5f]/90">
-                {book?.longDesc ?? book?.desc ?? "وصف الكتاب"}
-              </p>
-
-              <div className="mb-6 flex gap-3">
-                <button
-                  type="button"
-                  className="rounded-lg p-2 text-[#1e3a5f] hover:bg-[#f5f0e8]"
-                  aria-label="حفظ"
-                >
-                  <BookmarkIcon />
-                </button>
-                <button
-                  type="button"
-                  className="rounded-lg p-2 text-[#1e3a5f] hover:bg-[#f5f0e8]"
-                  aria-label="إعجاب"
-                >
-                  <HeartIcon />
-                </button>
-              </div>
-
-              <div className="mb-6 flex flex-wrap gap-4">
-                <a
-                  href={book?.pdfUrl || "#"}
-                  target={book?.pdfUrl ? "_blank" : undefined}
-                  rel={book?.pdfUrl ? "noreferrer" : undefined}
-                  className="flex items-center gap-2 rounded-lg bg-[#1e3a5f] px-6 py-3 text-white transition hover:bg-[#2c5282]"
-                >
-                  <DownloadIcon />
-                  تحميل
-                </a>
-                <button
-                  type="button"
-                  className="flex items-center gap-2 rounded-lg border border-[#1e3a5f]/30 bg-white px-6 py-3 text-[#1e3a5f] transition hover:bg-[#f5f0e8]"
-                >
-                  <ReadIcon />
-                  قراءة
-                </button>
-              </div>
-
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  placeholder="ماذا تريد أن تكتب؟"
-                  className="flex-1 rounded-lg border border-[#e5e0d8] bg-[#faf8f5] px-4 py-3 text-[#1e3a5f] placeholder:text-[#1e3a5f]/50 focus:border-[#1e3a5f]/50 focus:outline-none"
-                  aria-label="تعليق"
-                />
-                <button
-                  type="button"
-                  className="rounded-lg bg-[#1e3a5f] p-3 text-white transition hover:bg-[#2c5282]"
-                  aria-label="إرسال"
-                >
-                  <SendIcon />
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* User reviews */}
-      <section className="bg-[#faf8f5] px-6 py-16">
-        <div className="mx-auto max-w-6xl">
-          <h2 className="mb-8 text-2xl font-bold text-[#1e3a5f]">
-            {booksContent.bookDetailReviewsTitle ?? "آراء عن هذا الكتاب"}
+          <h2 className="mb-8 text-center text-3xl font-bold text-[#0d6f95]">
+            منشورات ذات صلة
           </h2>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {reviews.map((review, i) => (
-              <div
-                key={i}
-                className="rounded-xl border border-[#e5e0d8] bg-white p-6"
-              >
-                <div className="mb-4 text-3xl text-[#1e3a5f]/40">&ldquo;</div>
-                <p className="mb-4 text-[#1e3a5f]">{review.text}</p>
-                <div className="flex gap-4 text-sm text-[#1e3a5f]/80">
-                  <span className="flex items-center gap-1">
-                    <HeartIcon className="size-4" /> {review.likes}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <EyeIcon /> {review.views}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="mt-8">
-            <Link
-              href="/reviews"
-              className="text-[#1e3a5f] underline hover:no-underline"
-            >
-              رؤية الكل
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Related books */}
-      <section className="px-6 py-16">
-        <div className="mx-auto max-w-6xl">
-          <h2 className="mb-8 text-2xl font-bold text-[#1e3a5f]">
-            {booksContent.relatedTitle ?? "كتب ذات صلة"}
-          </h2>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {related.map((item) => (
-              <article
-                key={item.id}
-                className="rounded-xl border border-[#e5e0d8] bg-white p-4 shadow-sm transition hover:shadow-md"
-              >
-                <Link href={`/books/${item.id}`} className="block">
-                  <div className="relative mb-4">
-                    <div className="aspect-[3/4] overflow-hidden rounded-lg bg-[#e5e0d8]">
-                      {item.imageUrl ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img src={item.imageUrl} alt={item.title} className="h-full w-full object-cover" />
-                      ) : (
-                        <div className="flex h-full w-full items-center justify-center text-[#1e3a5f]/50 text-sm">
-                          غلاف الكتاب
-                        </div>
-                      )}
-                    </div>
-                    <div className="absolute left-2 top-2 flex gap-2">
-                      <span className="rounded bg-white/90 p-1.5 text-[#1e3a5f]">
-                        <BookmarkIcon className="size-4" />
-                      </span>
-                      <span className="rounded bg-white/90 p-1.5 text-[#1e3a5f]">
-                        <HeartIcon className="size-4" />
-                      </span>
-                    </div>
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {relatedPosts.map((item) => (
+              <article key={item.id}>
+                <div className="overflow-hidden rounded-sm bg-white shadow-sm">
+                  <div className="aspect-[4/3] bg-[#d7d7d7]">
+                    {item.imageUrl ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={item.imageUrl} alt={item.title} className="h-full w-full object-cover" />
+                    ) : (
+                      <div className="flex h-full w-full items-start justify-end bg-[radial-gradient(circle_at_top_left,_#c44_0%,_#8f2b1e_25%,_#7b5b2b_55%,_#2e2a1f_100%)] p-4 text-right text-2xl font-bold text-white">
+                        {item.title}
+                      </div>
+                    )}
                   </div>
-                  <h3 className="mb-2 font-semibold text-[#1e3a5f]">
-                    {item.title}
-                  </h3>
-                  <p className="mb-4 line-clamp-2 text-sm text-[#1e3a5f]/80">
-                    {item.desc}
-                  </p>
-                </Link>
-                <a
-                  href={item.pdfUrl || "#"}
-                  target={item.pdfUrl ? "_blank" : undefined}
-                  rel={item.pdfUrl ? "noreferrer" : undefined}
-                  className="flex w-full items-center justify-center gap-2 rounded-lg border border-[#1e3a5f]/30 py-2 text-sm text-[#1e3a5f] transition hover:bg-[#f5f0e8]"
-                >
-                  <DownloadIcon className="size-4" />
-                  تحميل
-                </a>
+                </div>
+                <p className="mt-3 text-right text-sm text-[#0d6f95]">{item.author}</p>
               </article>
             ))}
           </div>
-          <div className="mt-8">
-            <Link
-              href="/books"
-              className="text-[#1e3a5f] underline hover:no-underline"
-            >
-              رؤية الكل
-            </Link>
-          </div>
+        </div>
+      </section>
+
+      <section className="px-6 pb-12 pt-4">
+        <div className="mx-auto max-w-6xl">
+          <p className="mb-2 text-right text-sm text-[#0d6f95]">أضف تعليقاً</p>
+          <form className="space-y-5">
+            <textarea
+              className="h-40 w-full rounded-sm border-none bg-[#ededed] p-4 text-right text-[#0d6f95] outline-none"
+            />
+            <div className="grid gap-4 md:grid-cols-3">
+              <input
+                type="text"
+                placeholder="الاسم"
+                className="rounded-sm border-none bg-[#ededed] px-4 py-3 text-right text-[#0d6f95] outline-none"
+              />
+              <input
+                type="email"
+                placeholder="البريد الإلكتروني"
+                className="rounded-sm border-none bg-[#ededed] px-4 py-3 text-right text-[#0d6f95] outline-none"
+              />
+              <input
+                type="text"
+                placeholder="الموقع (اختياري)"
+                className="rounded-sm border-none bg-[#ededed] px-4 py-3 text-right text-[#0d6f95] outline-none"
+              />
+            </div>
+            <div className="text-right">
+              <button
+                type="button"
+                className="inline-flex min-w-32 justify-center rounded-xl bg-[#f1f1f1] px-6 py-2 text-sm text-[#0d6f95] shadow"
+              >
+                نشر تعليقك
+              </button>
+            </div>
+          </form>
         </div>
       </section>
 
       <Footer />
+    </div>
+  );
+}
+
+function FanDivider() {
+  return (
+    <div className="relative h-44 overflow-hidden">
+      <div className="absolute inset-0 bg-[#f5f5f5]" />
+      <div className="absolute bottom-0 left-0 right-0 top-0 bg-[#dfe8ee]" style={{ clipPath: "polygon(0 0, 50% 100%, 100% 0, 100% 100%, 0 100%)" }} />
+      <div className="absolute bottom-0 left-0 right-0 top-8 bg-[#a6bfd0]" style={{ clipPath: "polygon(0 0, 50% 100%, 100% 0, 100% 100%, 0 100%)" }} />
+      <div className="absolute bottom-0 left-0 right-0 top-14 bg-[#5d8aaa]" style={{ clipPath: "polygon(0 0, 50% 100%, 100% 0, 100% 100%, 0 100%)" }} />
+      <div className="absolute bottom-0 left-0 right-0 top-20 bg-[#2d6b92]" style={{ clipPath: "polygon(0 0, 50% 100%, 100% 0, 100% 100%, 0 100%)" }} />
+      <div className="absolute bottom-0 left-0 right-0 top-28 bg-[#045f84]" style={{ clipPath: "polygon(0 0, 50% 100%, 100% 0, 100% 100%, 0 100%)" }} />
     </div>
   );
 }
@@ -292,27 +249,9 @@ function DownloadIcon({ className }: { className?: string }) {
   );
 }
 
-function ReadIcon() {
+function ReadIcon({ className }: { className?: string }) {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
-      <circle cx="12" cy="12" r="3" />
-    </svg>
-  );
-}
-
-function SendIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <path d="m22 2-7 20-4-9-9-4L22 2Z" />
-      <path d="M22 2 11 13" />
-    </svg>
-  );
-}
-
-function EyeIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
       <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
       <circle cx="12" cy="12" r="3" />
     </svg>

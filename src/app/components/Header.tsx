@@ -22,11 +22,19 @@ function SearchIcon() {
 
 type GlobalContent = {
   nav?: {
+    logoText?: string;
     home?: string;
+    works?: string;
     about?: string;
     books?: string;
     articles?: string;
-    articleItems?: Array<{ id: string; label: string }>;
+    videos?: string;
+    thoughts?: string;
+    contact?: string;
+    audioBooks?: string;
+    bookShow?: string;
+    phenomenonAnalysis?: string;
+    questions?: string;
   };
 };
 
@@ -43,58 +51,88 @@ export default function Header() {
   }, []);
 
   const nav = content?.nav;
-  const articleItems = nav?.articleItems ?? [
-    { id: "1", label: "عنوان المقال 1" },
-    { id: "2", label: "عنوان المقال 2" },
-  ];
 
   return (
-    <header className="px-6 py-4">
-      <nav className="mx-auto max-w-4xl">
-        <div className="flex items-center justify-between rounded-full border border-[#d0c9bf] bg-white/80 px-6 py-3 shadow-sm backdrop-blur-sm">
+    <header className="bg-[#05698e] text-white shadow-sm">
+      <nav dir="ltr" className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-4 lg:px-6">
+        <Link href="/" className="shrink-0 text-sm font-semibold tracking-wide text-white">
+          {nav?.logoText ?? "LOGO HERE"}
+        </Link>
 
-          {/* Left end: search icon */}
+        <div className="hidden shrink-0 items-center gap-3 md:flex">
           <button
             type="button"
             aria-label="بحث"
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#1e3a5f] text-white transition hover:bg-[#2c5282]"
+            className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/95 text-[#05698e] shadow-sm transition hover:bg-white"
           >
             <SearchIcon />
           </button>
+          <Link
+            href="/questions"
+            className="rounded-xl bg-white px-5 py-2 text-sm font-medium text-[#5b4a3b] shadow-md transition hover:bg-[#f7f3ee]"
+          >
+            {nav?.questions ?? "أسئلة وأجوبة"}
+          </Link>
+        </div>
 
-          {/* Right side: nav links */}
-          <div className="flex items-center gap-6 text-sm">
-            <Link href="/" className="font-semibold text-[#1e3a5f] transition hover:opacity-70">
-              {nav?.home ?? "الرئيسية"}
-            </Link>
-            <Link href="/about" className="text-[#1e3a5f] transition hover:opacity-70">
-              {nav?.about ?? "عن الكاتب"}
-            </Link>
-            <Link href="/books" className="flex items-center gap-0.5 text-[#1e3a5f] transition hover:opacity-70">
-              {nav?.books ?? "الكتب"}
-              <DropdownArrowIcon />
-            </Link>
-            <span className="group relative">
-              <span className="flex cursor-default items-center gap-0.5 text-[#1e3a5f]">
-                {nav?.articles ?? "المنشورات"}
-                <DropdownArrowIcon />
-              </span>
-              <div className="invisible absolute top-full right-0 z-50 mt-2 min-w-[160px] rounded-xl border border-[#e5e0d8] bg-white py-2 opacity-0 shadow-lg transition-all group-hover:visible group-hover:opacity-100">
-                {articleItems.map((item) => (
-                  <Link
-                    key={item.id}
-                    href={`/articles/${item.id}`}
-                    className="block px-4 py-2 text-sm text-[#1e3a5f] hover:bg-[#f5f0e8]"
-                  >
-                    {item.label}
-                  </Link>
-                ))}
-              </div>
-            </span>
-          </div>
+        <div dir="rtl" className="hidden flex-1 items-center justify-end gap-5 text-sm lg:flex xl:gap-7">
+          <Link href="/" className="transition hover:opacity-80">
+            {nav?.home ?? "الصفحة الرئيسية"}
+          </Link>
+          <Link href="/works" className="flex items-center gap-1 transition hover:opacity-80">
+            {nav?.works ?? "مؤلفاتي"}
+            <DropdownArrowIcon />
+          </Link>
+          <Link href="/articles" className="transition hover:opacity-80">
+            {nav?.articles ?? "المنشورات"}
+          </Link>
+          <Link href="/videos" className="transition hover:opacity-80">
+            {nav?.videos ?? "الفيديوهات"}
+          </Link>
+          <Link href="/thoughts" className="transition hover:opacity-80">
+            {nav?.thoughts ?? "خواطر"}
+          </Link>
+          <Link href="/contact" className="transition hover:opacity-80">
+            {nav?.contact ?? "تواصل معنا"}
+          </Link>
+          <Link href="/audio-books" className="transition hover:opacity-80">
+            {nav?.audioBooks ?? "الكتب الصوتية"}
+          </Link>
+          <Link href="/book-show" className="transition hover:opacity-80">
+            {nav?.bookShow ?? "عرض الكتاب"}
+          </Link>
+          <Link href="/phenomenon-analysis" className="transition hover:opacity-80">
+            {nav?.phenomenonAnalysis ?? "تحليل الظاهرة"}
+          </Link>
+        </div>
 
+        <div className="mr-auto flex items-center gap-2 lg:hidden">
+          <button
+            type="button"
+            aria-label="بحث"
+            className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/95 text-[#05698e]"
+          >
+            <SearchIcon />
+          </button>
+          <Link
+            href="/questions"
+            className="rounded-xl bg-white px-4 py-2 text-sm font-medium text-[#5b4a3b]"
+          >
+            {nav?.questions ?? "أسئلة وأجوبة"}
+          </Link>
         </div>
       </nav>
+      <div dir="rtl" className="flex flex-wrap items-center justify-end gap-x-4 gap-y-2 px-4 pb-3 text-xs text-white/90 lg:hidden">
+        <Link href="/">{nav?.home ?? "الصفحة الرئيسية"}</Link>
+        <Link href="/works">{nav?.works ?? "مؤلفاتي"}</Link>
+        <Link href="/articles">{nav?.articles ?? "المنشورات"}</Link>
+        <Link href="/videos">{nav?.videos ?? "الفيديوهات"}</Link>
+        <Link href="/thoughts">{nav?.thoughts ?? "خواطر"}</Link>
+        <Link href="/contact">{nav?.contact ?? "تواصل معنا"}</Link>
+        <Link href="/audio-books">{nav?.audioBooks ?? "الكتب الصوتية"}</Link>
+        <Link href="/book-show">{nav?.bookShow ?? "عرض الكتاب"}</Link>
+        <Link href="/phenomenon-analysis">{nav?.phenomenonAnalysis ?? "تحليل الظاهرة"}</Link>
+      </div>
     </header>
   );
 }

@@ -38,14 +38,21 @@ type GlobalContent = {
     copyright?: string;
   };
   nav?: {
+    home?: string;
     about?: string;
     books?: string;
     articles?: string;
+    contact?: string;
   };
+};
+
+type AboutContent = {
+  authorImageUrl?: string;
 };
 
 export default function Footer() {
   const [content, setContent] = useState<GlobalContent | null>(null);
+  const [about, setAbout] = useState<AboutContent | null>(null);
 
   useEffect(() => {
     void fetch("/api/content/global")
@@ -54,60 +61,103 @@ export default function Footer() {
       .catch(() => {
         // Keep static fallback labels if content API fails.
       });
+    void fetch("/api/content/about")
+      .then((r) => r.json())
+      .then((d) => setAbout((d?.data ?? null) as AboutContent))
+      .catch(() => {
+        // Keep placeholder image if content API fails.
+      });
   }, []);
 
   const footer = content?.footer;
   const nav = content?.nav;
 
   return (
-    <footer className="bg-[#1a2f52] px-6 pt-14 pb-6 text-white">
-      <div className="mx-auto max-w-5xl">
-        <div className="mb-10 grid grid-cols-1 gap-10 md:grid-cols-3">
+    <footer className="bg-[#05698e] text-white">
+      <div className="relative h-24 overflow-hidden bg-[#f6f6f6]">
+        <div className="absolute inset-x-[-8%] bottom-8 h-20 rounded-[100%] bg-[#d5e5ef]" />
+        <div className="absolute inset-x-[-12%] bottom-2 h-24 rounded-[100%] bg-[#b6cfde]" />
+        <div className="absolute inset-x-[-8%] bottom-[-24px] h-24 rounded-[100%] bg-[#e8f0f5]" />
+      </div>
 
-          {/* Col 1 — right in RTL: author name + description */}
+      <div className="mx-auto max-w-6xl px-6 pb-6 pt-10">
+        <div className="grid gap-10 md:grid-cols-[1.2fr_1fr_1fr_220px] md:items-end">
           <div className="text-right">
-            <h3 className="mb-3 text-lg font-bold text-white">{content?.siteTitle ?? "اسم الكاتب"}</h3>
-            <p className="text-sm leading-relaxed text-white/70">
+            <h3 className="mb-4 text-lg font-bold">{content?.siteTitle ?? "اسم الكاتب"}</h3>
+            <p className="max-w-sm text-sm leading-7 text-white/90">
               {content?.siteDescription ??
-                "كاتب معاصر يستكشف التجربة الإنسانية من خلال القصص والروايات التي تلامس القلب والعقل."}
+                "باحث وكاتب يهتم بنشر المعرفة والفكر، مع عناية بالمحتوى العربي والإسلامي في قالب واضح ومؤثر."}
+            </p>
+            <div className="mt-5 space-y-1 text-sm text-white/85">
+              <p>تلفون: 000000000</p>
+              <p>البريد: lorem@example.com</p>
+              <p>العنوان: موقع افتراضي للتواصل</p>
+            </div>
+          </div>
+
+          <div className="text-right">
+            <h3 className="mb-4 text-base font-bold">{footer?.quickLinksTitle ?? "روابط سريعة"}</h3>
+            <div className="flex flex-col gap-2 text-sm text-white/90">
+              <Link href="/" className="transition hover:text-white">{nav?.home ?? "الصفحة الرئيسية"}</Link>
+              <Link href="/about" className="transition hover:text-white">{nav?.about ?? "عن الكاتب"}</Link>
+              <Link href="/books" className="transition hover:text-white">{nav?.books ?? "الكتب"}</Link>
+              <Link href="/articles" className="transition hover:text-white">{nav?.articles ?? "المنشورات"}</Link>
+              <Link href="/contact" className="transition hover:text-white">{nav?.contact ?? "تواصل معنا"}</Link>
+            </div>
+          </div>
+
+          <div className="text-right text-sm text-white/90">
+            <h3 className="mb-4 text-base font-bold">معلومات إضافية</h3>
+            <p className="leading-7">
+              هذا القسم مخصص للوصف المختصر، الروابط المهمة، أو أي بيانات إضافية تريدين ظهورها في ذيل الموقع.
             </p>
           </div>
 
-          {/* Col 2 — center: quick links */}
-          <div className="text-center">
-            <h3 className="mb-4 text-lg font-bold text-white">{footer?.quickLinksTitle ?? "روابط سريعة"}</h3>
-            <div className="flex flex-col gap-2">
-              <Link href="/about" className="text-white/70 transition hover:text-white">{nav?.about ?? "عن الكاتب"}</Link>
-              <Link href="/books" className="text-white/70 transition hover:text-white">{nav?.books ?? "الكتب"}</Link>
-              <Link href="/articles/1" className="text-white/70 transition hover:text-white">{nav?.articles ?? "المنشورات"}</Link>
+          <div className="flex flex-col items-center gap-4 md:items-end">
+            <div className="flex h-24 w-24 items-center justify-center rounded-full bg-white text-center text-xs font-semibold text-[#05698e] shadow-md">
+              شعار
+            </div>
+            <div className="h-28 w-24 overflow-hidden rounded bg-white/20 shadow-md">
+              {about?.authorImageUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={about.authorImageUrl} alt="صورة الكاتب" className="h-full w-full object-cover" />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center bg-white/15 text-xs text-white">
+                  صورة الكاتب
+                </div>
+              )}
             </div>
           </div>
-
-          {/* Col 3 — left in RTL: social icons */}
-          <div className="text-center md:text-left">
-            <h3 className="mb-4 text-lg font-bold text-white">{footer?.followTitle ?? "تابعني"}</h3>
-            <div className="flex justify-center gap-3 md:justify-start">
-              <a href="#" aria-label="انستغرام"
-                className="flex h-11 w-11 items-center justify-center rounded-full border border-white/30 text-white transition hover:border-white hover:bg-white/10">
-                <InstagramIcon />
-              </a>
-              <a href="#" aria-label="فيسبوك"
-                className="flex h-11 w-11 items-center justify-center rounded-full border border-white/30 text-white transition hover:border-white hover:bg-white/10">
-                <FacebookIcon />
-              </a>
-              <a href="#" aria-label="إكس"
-                className="flex h-11 w-11 items-center justify-center rounded-full border border-white/30 text-white transition hover:border-white hover:bg-white/10">
-                <TwitterIcon />
-              </a>
-            </div>
-          </div>
-
         </div>
 
-        <div className="border-t border-white/15 pt-5 text-center text-sm text-white/50">
-          {footer?.copyright ?? "جميع الحقوق محفوظة © 2026"}
+        <div className="mt-8 flex flex-col items-center justify-between gap-4 border-t border-white/20 pt-5 md:flex-row">
+          <div className="text-sm text-white/80">
+            {footer?.copyright ?? "جميع الحقوق محفوظة للباحث سامر اسمويل © 2026"}
+          </div>
+          <div className="flex items-center gap-3">
+            <a href="#" aria-label="انستغرام" className="text-white transition hover:text-white/80">
+              <InstagramIcon />
+            </a>
+            <a href="#" aria-label="فيسبوك" className="text-white transition hover:text-white/80">
+              <FacebookIcon />
+            </a>
+            <a href="#" aria-label="إكس" className="text-white transition hover:text-white/80">
+              <TwitterIcon />
+            </a>
+            <a href="#" aria-label="يوتيوب" className="text-white transition hover:text-white/80">
+              <YoutubeIcon />
+            </a>
+          </div>
         </div>
       </div>
     </footer>
+  );
+}
+
+function YoutubeIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M23.5 6.2a3.02 3.02 0 0 0-2.12-2.14C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.38.56A3.02 3.02 0 0 0 .5 6.2 31.3 31.3 0 0 0 0 12a31.3 31.3 0 0 0 .5 5.8 3.02 3.02 0 0 0 2.12 2.14c1.88.56 9.38.56 9.38.56s7.5 0 9.38-.56a3.02 3.02 0 0 0 2.12-2.14A31.3 31.3 0 0 0 24 12a31.3 31.3 0 0 0-.5-5.8ZM9.6 15.5v-7L15.8 12l-6.2 3.5Z" />
+    </svg>
   );
 }
