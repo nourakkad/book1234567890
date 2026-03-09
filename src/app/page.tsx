@@ -95,15 +95,15 @@ export default function Home() {
       <Header />
 
       <section className="bg-[#e8e8e8]">
-        <div className="mx-auto h-[340px] max-w-7xl sm:h-[420px] lg:h-[500px]" />
+        <div className="mx-auto h-[280px] max-w-7xl sm:h-[380px] md:h-[420px] lg:h-[500px]" />
       </section>
 
-      <section className="relative overflow-hidden bg-[#05698e] px-6 pb-24 pt-10 text-center text-white">
+      <section className="relative overflow-hidden bg-[#05698e] px-4 pb-24 pt-8 text-center text-white sm:px-6 sm:pt-10">
         <div className="mx-auto max-w-5xl">
-          <h1 className="mb-3 text-2xl font-bold md:text-3xl">
+          <h1 className="mb-3 text-xl font-bold sm:text-2xl md:text-3xl">
             {homeContent.heroTitle ?? "مرحباً بك في موقع الباحث سامر اسمويل"}
           </h1>
-          <p className="mx-auto max-w-5xl text-sm leading-8 text-white/95 md:text-base">
+          <p className="mx-auto max-w-5xl text-sm leading-8 text-white/95 sm:text-base">
             {homeContent.heroText ??
               "موقع يهتم بنشر العلم والمعرفة في قالب مميز وقديم مؤثر قابل للتطبيق، بغرض إيصال المعلومة وفهمها مع الالتزام بأصول العمل، والأخذ من التراث الفكري العربي والإسلامي، والانفتاح من خلال فهم العلم والأخلاق أساس التنمية والعمران."}
           </p>
@@ -111,7 +111,7 @@ export default function Home() {
         <LayeredWave />
       </section>
 
-      <section className="bg-[#f6f6f6] px-5 py-14">
+      <section className="bg-[#f6f6f6] px-4 py-10 sm:px-5 sm:py-14">
         <div className="mx-auto max-w-6xl">
           <SectionTitle>{homeContent.articlesTitle ?? "أحدث المقالات"}</SectionTitle>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -123,7 +123,7 @@ export default function Home() {
                       // eslint-disable-next-line @next/next/no-img-element
                       <img src={article.imageUrl} alt={article.title} className="h-full w-full object-cover" />
                     ) : (
-                      <div className="flex h-full w-full items-start justify-end bg-[radial-gradient(circle_at_top_left,_#c44_0%,_#8f2b1e_25%,_#7b5b2b_55%,_#2e2a1f_100%)] p-4 text-right text-2xl font-bold text-white">
+                      <div className="flex h-full w-full items-start justify-end bg-[radial-gradient(circle_at_top_left,_#c44_0%,_#8f2b1e_25%,_#7b5b2b_55%,_#2e2a1f_100%)] p-3 text-right text-lg font-bold text-white sm:p-4 sm:text-xl md:text-2xl">
                         {article.title}
                       </div>
                     )}
@@ -141,12 +141,12 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-[#f6f6f6] px-5 pb-0 pt-4">
+      <section className="bg-[#f6f6f6] px-4 pb-0 pt-4 sm:px-5">
         <div className="mx-auto max-w-6xl">
           <SectionTitle>{homeContent.thoughtsTitle ?? thoughtsContent.title ?? "أحدث الخواطر"}</SectionTitle>
           <div className="grid gap-5 md:grid-cols-3">
             {thoughtCards.map((item) => (
-              <article key={item.id} className="rounded-lg bg-white p-6 text-right shadow-md">
+              <article key={item.id} className="rounded-lg bg-white p-4 text-right shadow-md sm:p-6">
                 <p className="text-base leading-8 text-[#0f6b8e]">{item.text}</p>
               </article>
             ))}
@@ -160,7 +160,7 @@ export default function Home() {
         <FanDivider />
       </section>
 
-      <section className="bg-[#f6f6f6] px-5 py-14">
+      <section className="bg-[#f6f6f6] px-4 py-10 sm:px-5 sm:py-14">
         <div className="mx-auto max-w-6xl">
           <SectionTitle>{homeContent.videosTitle ?? videosContent.title ?? "أحدث الفيديوهات"}</SectionTitle>
           <div className="grid gap-5 md:grid-cols-2">
@@ -201,17 +201,17 @@ export default function Home() {
         <div className="h-10 bg-[#045f84]" style={{ clipPath: "polygon(0 0, 100% 0, 50% 100%)" }} />
       </section>
 
-      <section className="bg-[#f6f6f6] px-5 py-14">
+      <section className="bg-[#f6f6f6] px-4 py-10 sm:px-5 sm:py-14">
         <div className="mx-auto max-w-6xl">
           <SectionTitle>{homeContent.featuredBooksTitle ?? booksContent.sectionTitle ?? "أبرز كتب الباحث سامر اسمويل"}</SectionTitle>
-          <div className="relative flex items-center justify-center gap-6 overflow-hidden px-8">
+          <div className="relative flex items-center justify-center gap-4 overflow-hidden px-4 sm:gap-6 sm:px-8">
             <button type="button" aria-label="السابق" className="absolute right-0 text-2xl text-[#0d6f95]">
               ›
             </button>
-            <div className="flex flex-wrap items-end justify-center gap-6">
+            <div className="flex flex-wrap items-end justify-center gap-4 sm:gap-6">
               {featuredBooks.map((book, index) => (
                 <Link key={book.id} href={`/books/${book.id}`} className="block">
-                  <div className={`w-28 md:w-36 ${index % 2 === 0 ? "translate-y-2" : ""}`}>
+                  <div className={`w-24 sm:w-28 md:w-36 ${index % 2 === 0 ? "translate-y-2" : ""}`}>
                     <div className="aspect-[3/4] overflow-hidden bg-white shadow-md">
                       {book.imageUrl ? (
                         // eslint-disable-next-line @next/next/no-img-element
@@ -245,7 +245,7 @@ export default function Home() {
 
 function SectionTitle({ children }: { children: string }) {
   return (
-    <h2 className="mb-8 text-center text-3xl font-bold text-[#0d6f95]">
+    <h2 className="mb-6 text-center text-2xl font-bold text-[#0d6f95] sm:mb-8 sm:text-3xl">
       {children}
     </h2>
   );

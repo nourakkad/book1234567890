@@ -48,7 +48,7 @@ export default function AudioBooksPage() {
       <main className="bg-white">
         <section className="px-4 pb-16 pt-10 md:px-8">
           <div className="mx-auto max-w-6xl">
-            <h1 className="mb-2 text-center text-2xl font-bold text-[#1e3a5f] md:text-3xl">
+            <h1 className="mb-2 text-center text-xl font-bold text-[#1e3a5f] sm:text-2xl md:text-3xl">
               {content.title ?? "الكتب الصوتية"}
             </h1>
             {content.description ? (
@@ -75,12 +75,12 @@ export default function AudioBooksPage() {
                             className="h-full w-full object-cover"
                           />
                         ) : (
-                          <div className="flex h-full w-full flex-col justify-between bg-[linear-gradient(135deg,#f5e6a0,#e8b87a,#d97a6a,#b86a9e,#6a8bb8,#7ab89e)] p-4">
+                          <div className="flex h-full w-full flex-col justify-between bg-[linear-gradient(135deg,#f5e6a0,#e8b87a,#d97a6a,#b86a9e,#6a8bb8,#7ab89e)] p-3 sm:p-4">
                             <p className="text-right text-sm font-medium text-[#0d5f84]">
                               {book.author ?? "سامر اسلامبولی"}
                             </p>
                             <div className="flex-1" />
-                            <p className="text-right text-xl font-bold leading-tight text-[#c45c3e]">
+                            <p className="text-right text-base font-bold leading-tight text-[#c45c3e] sm:text-xl">
                               {book.title ?? "كتاب صوتي"}
                             </p>
                             <p className="mt-2 text-right text-xs leading-relaxed text-[#5c4033]/90">

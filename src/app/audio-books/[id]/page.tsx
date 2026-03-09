@@ -138,7 +138,7 @@ export default function AudioBookDetailPage() {
     return (
       <div className="min-h-screen bg-[#faf8f5]">
         <Header />
-        <main className="px-6 py-16 text-center">
+        <main className="px-4 py-12 text-center sm:px-6 sm:py-16">
           <p className="text-[#1e3a5f]">الكتاب غير موجود.</p>
           <button
             type="button"
@@ -192,7 +192,7 @@ export default function AudioBookDetailPage() {
 
             {/* Left: title, actions, player */}
             <div className="min-w-0 flex-1">
-              <h1 className="mb-6 text-2xl font-bold text-[#1e3a5f] md:text-3xl">
+              <h1 className="mb-6 text-xl font-bold text-[#1e3a5f] sm:text-2xl md:text-3xl">
                 {displayTitle}
               </h1>
 
@@ -222,11 +222,11 @@ export default function AudioBookDetailPage() {
                 {book.audioUrl ? (
                   <>
                     <audio ref={audioRef} src={book.audioUrl} preload="metadata" />
-                    <div className="flex flex-col items-center justify-center px-6 py-12">
+                    <div className="flex flex-col items-center justify-center px-4 py-10 sm:px-6 sm:py-12">
                       <HeadphonesIcon />
                     </div>
                     {/* Dark blue control bar */}
-                    <div className="flex items-center gap-4 bg-[#0d5f84] px-4 py-3">
+                    <div className="flex flex-wrap items-center gap-3 bg-[#0d5f84] px-3 py-3 sm:gap-4 sm:px-4">
                       <button
                         type="button"
                         onClick={togglePlay}
@@ -265,13 +265,13 @@ export default function AudioBookDetailPage() {
                           step={0.05}
                           value={volume}
                           onChange={(e) => setVolume(Number(e.target.value))}
-                          className="h-1.5 w-20 accent-white"
+                          className="h-1.5 w-14 accent-white sm:w-20"
                         />
                       </div>
                     </div>
                   </>
                 ) : (
-                  <div className="flex flex-col items-center justify-center px-6 py-16">
+                  <div className="flex flex-col items-center justify-center px-4 py-12 sm:px-6 sm:py-16">
                     <HeadphonesIcon />
                     <p className="mt-4 text-center text-[#1e3a5f]/70">
                       لم يتم رفع الملف الصوتي بعد. أضفه من لوحة التحكم.

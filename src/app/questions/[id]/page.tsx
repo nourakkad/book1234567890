@@ -37,7 +37,7 @@ export default function QuestionDetailPage() {
     return (
       <div className="min-h-screen bg-[#faf8f5]">
         <Header />
-        <main className="px-6 py-16 text-center">
+        <main className="px-4 py-12 text-center sm:px-6 sm:py-16">
           <p className="text-[#1e3a5f]">السؤال غير موجود.</p>
           <Link
             href="/questions"
@@ -64,7 +64,7 @@ export default function QuestionDetailPage() {
             ← العودة للأسئلة والأجوبة
           </Link>
 
-          <h1 className="mb-8 text-2xl font-bold text-[#1e3a5f] md:text-3xl">
+          <h1 className="mb-6 text-xl font-bold text-[#1e3a5f] sm:mb-8 sm:text-2xl md:text-3xl">
             {item.question ?? "سؤال"}
           </h1>
 

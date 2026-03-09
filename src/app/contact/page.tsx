@@ -47,16 +47,16 @@ export default function ContactPage() {
           </div>
         </section>
 
-        <section className="px-6 pb-14 pt-10">
+        <section className="px-4 pb-14 pt-8 sm:px-6 sm:pt-10">
           <div className="mx-auto max-w-2xl">
-            <h1 className="mb-10 text-center text-3xl font-bold text-[#1e3a5f]">
+            <h1 className="mb-8 text-center text-2xl font-bold text-[#1e3a5f] sm:mb-10 sm:text-3xl">
               {content.title ?? "تواصل معنا"}
             </h1>
 
             {/* Contact form */}
             <form
               onSubmit={handleContactSubmit}
-              className="mb-14 rounded-2xl border border-[#ddd2c4] bg-white p-6 shadow-sm md:p-8"
+              className="mb-14 rounded-2xl border border-[#ddd2c4] bg-white p-4 shadow-sm sm:p-6 md:p-8"
             >
               <div className="mb-4">
                 <label htmlFor="contact-name" className="mb-2 block text-right text-sm font-medium text-[#1e3a5f]">
@@ -121,7 +121,7 @@ export default function ContactPage() {
             </div>
 
             {/* Newsletter subscription */}
-            <div className="rounded-2xl border border-[#ddd2c4] bg-white p-6 shadow-sm md:p-8">
+            <div className="rounded-2xl border border-[#ddd2c4] bg-white p-4 shadow-sm sm:p-6 md:p-8">
               <p className="mb-6 text-center text-lg text-[#1e3a5f]">
                 {content.newsletterPrompt ?? "اكتب بريدك الاكتروني ليصلك كل جديد"}
               </p>

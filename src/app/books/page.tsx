@@ -66,13 +66,13 @@ export default function BooksPage() {
       <Header />
 
       {/* Book grid */}
-      <section className="px-6 py-12">
+      <section className="px-4 py-10 sm:px-6 sm:py-12">
         <div className="mx-auto max-w-6xl">
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {paginatedBooks.map((book) => (
-              <article
+                <article
                 key={book.id}
-                className="flex flex-col items-center rounded-xl border border-[#e5e0d8] bg-white p-4 shadow-sm transition hover:shadow-md"
+                className="flex flex-col items-center rounded-xl border border-[#e5e0d8] bg-white p-3 shadow-sm transition hover:shadow-md sm:p-4"
               >
                 <Link href={`/books/${book.id}`} className="block w-full">
                   <div className="relative mb-4">
@@ -85,8 +85,8 @@ export default function BooksPage() {
                           className="h-full w-full object-cover"
                         />
                       ) : (
-                        <div className="flex h-full w-full flex-col justify-end bg-[linear-gradient(135deg,#f5e6a0,#e8b87a,#d97a6a,#b86a9e,#6a8bb8,#7ab89e)] p-4">
-                          <p className="text-right text-lg font-bold leading-tight text-[#8b4513]">
+                        <div className="flex h-full w-full flex-col justify-end bg-[linear-gradient(135deg,#f5e6a0,#e8b87a,#d97a6a,#b86a9e,#6a8bb8,#7ab89e)] p-3 sm:p-4">
+                          <p className="text-right text-base font-bold leading-tight text-[#8b4513] sm:text-lg">
                             {book.title}
                           </p>
                           {book.author ? (
@@ -104,7 +104,7 @@ export default function BooksPage() {
                 </Link>
                 <Link
                   href={`/books/${book.id}`}
-                  className="mt-2 inline-block rounded-lg bg-[#0d5f84] px-6 py-2.5 text-center text-sm font-medium text-white transition hover:bg-[#0a4d6d]"
+                  className="mt-2 inline-block w-full rounded-lg bg-[#0d5f84] px-4 py-2.5 text-center text-sm font-medium text-white transition hover:bg-[#0a4d6d] sm:w-auto sm:px-6"
                 >
                   انقر هنا لعرض الكتاب
                 </Link>
@@ -137,10 +137,10 @@ export default function BooksPage() {
       </section>
 
       {/* What do readers say */}
-      <section className="bg-[#faf8f5] px-6 py-16">
+      <section className="bg-[#faf8f5] px-4 py-12 sm:px-6 sm:py-16">
         <div className="mx-auto max-w-6xl">
-          <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
-            <h2 className="text-2xl font-bold text-[#1e3a5f]">
+          <div className="mb-6 flex flex-wrap items-center justify-between gap-4 sm:mb-8">
+            <h2 className="text-xl font-bold text-[#1e3a5f] sm:text-2xl">
               {booksContent.reviewsTitle ?? "ماذا يقول القراء؟"}
             </h2>
             <Link
@@ -157,7 +157,7 @@ export default function BooksPage() {
               { text: "أسلوب الكاتب مميز ويستحق المتابعة، أنصح بقراءة جميع أعماله", likes: 74, dislikes: 8 },
               { text: "كتب رائعة تلامس الوجدان وتفتح آفاقاً جديدة في التفكير", likes: 63, dislikes: 5 },
             ]).map((review, i) => (
-              <div key={i} className="rounded-2xl bg-[#eeeae4] px-7 py-6">
+              <div key={i} className="rounded-2xl bg-[#eeeae4] px-4 py-5 sm:px-7 sm:py-6">
                 {/* Large quote mark */}
                 <div className="mb-4 text-right">
                   <svg width="34" height="27" viewBox="0 0 38 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -190,7 +190,7 @@ export default function BooksPage() {
       </section>
 
       {/* Author info + stats */}
-      <section className="bg-white px-6 py-16">
+      <section className="bg-white px-4 py-12 sm:px-6 sm:py-16">
         <div className="mx-auto flex max-w-6xl flex-col gap-12 md:flex-row md:items-center md:justify-between">
           <div className="max-w-2xl">
             <p className="leading-relaxed text-[#1e3a5f]">
@@ -208,12 +208,12 @@ export default function BooksPage() {
                     { value: "+3", label: "جوائز" },
                   ]
             ).map((stat, idx) => (
-              <div key={idx} className="flex items-center gap-4 rounded-xl bg-[#f5f0e8] px-6 py-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#1e3a5f]/10 text-[#1e3a5f]">
+              <div key={idx} className="flex items-center gap-3 rounded-xl bg-[#f5f0e8] px-4 py-3 sm:gap-4 sm:px-6 sm:py-4">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#1e3a5f]/10 text-[#1e3a5f] sm:h-12 sm:w-12">
                 {idx === 0 ? <UsersIcon /> : idx === 1 ? <BookIcon /> : <MedalIcon />}
               </div>
               <div>
-                <span className="text-2xl font-bold text-[#1e3a5f]">{stat.value}</span>
+                <span className="text-xl font-bold text-[#1e3a5f] sm:text-2xl">{stat.value}</span>
                 <p className="text-sm text-[#1e3a5f]/80">{stat.label}</p>
               </div>
             </div>

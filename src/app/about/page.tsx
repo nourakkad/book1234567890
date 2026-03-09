@@ -64,7 +64,7 @@ export default function AboutWriterPage() {
           </div>
 
           {/* Text — RIGHT, restore rtl for Arabic content */}
-          <div className="flex flex-1 flex-col justify-center px-8 pb-16 pt-12 text-right md:px-16 md:py-24" dir="rtl">
+          <div className="flex flex-1 flex-col justify-center px-4 pb-12 pt-8 text-right sm:px-6 sm:pb-16 sm:pt-12 md:px-16 md:py-24" dir="rtl">
 
             {/* Pill badge */}
             <div className="mb-8 flex justify-start">
@@ -73,7 +73,7 @@ export default function AboutWriterPage() {
               </span>
             </div>
 
-            <h1 className="mb-7 text-4xl font-bold text-[#1e3a5f] leading-snug md:text-5xl">
+            <h1 className="mb-5 text-3xl font-bold text-[#1e3a5f] leading-snug sm:mb-7 sm:text-4xl md:text-5xl">
               {aboutContent.title ?? "نبذة عنيّ"}
             </h1>
 
@@ -90,14 +90,14 @@ export default function AboutWriterPage() {
       <button
         type="button"
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        className="fixed bottom-6 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-[#1e3a5f] text-white shadow-lg transition hover:bg-[#2c5282]"
+        className="fixed bottom-4 right-4 z-50 flex h-11 w-11 items-center justify-center rounded-full bg-[#1e3a5f] text-white shadow-lg transition hover:bg-[#2c5282] sm:bottom-6 sm:right-6 sm:h-12 sm:w-12"
         aria-label="العودة للأعلى"
       >
         <ArrowUpIcon />
       </button>
 
       {/* Statistics and writer role */}
-      <section className="bg-[#f5f3ef] px-6 py-16 md:py-20">
+      <section className="bg-[#f5f3ef] px-4 py-12 sm:px-6 sm:py-16 md:py-20">
         <div className="mx-auto max-w-5xl">
           {/* Use ltr here so we can control left/right visually regardless of page dir */}
           <div className="flex flex-col gap-12 md:flex-row md:items-center md:gap-16" dir="ltr">
@@ -113,7 +113,7 @@ export default function AboutWriterPage() {
                   ]).map((stat, i) => (
                 <div
                   key={i}
-                  className="flex items-center justify-end gap-4 rounded-2xl border border-[#d6cfc4] bg-white px-5 py-4"
+                  className="flex items-center justify-end gap-3 rounded-2xl border border-[#d6cfc4] bg-white px-4 py-3 sm:gap-4 sm:px-5 sm:py-4"
                 >
                   {/* Number + label — visually to the left of icon */}
                   <div className="text-right">

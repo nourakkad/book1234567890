@@ -88,32 +88,32 @@ export default function BookDetailPage() {
     <div className="min-h-screen bg-[#f5f5f5]">
       <Header />
 
-      <section className="px-6 py-10 md:py-14">
-        <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[360px_1fr] lg:items-start">
+      <section className="px-4 py-8 sm:px-6 sm:py-10 md:py-14">
+        <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[360px_1fr] lg:items-start lg:gap-10">
           <div className="mx-auto w-full max-w-[300px]">
             <div className="aspect-[3/4] overflow-hidden rounded-[2px] bg-white shadow-[0_12px_28px_rgba(0,0,0,0.2)]">
               {book?.imageUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={book.imageUrl} alt={book.title} className="h-full w-full object-cover" />
               ) : (
-                <div className="flex h-full w-full items-center justify-center bg-[linear-gradient(180deg,#5f79b5,#c6cde2)] px-8 text-center text-xl font-bold text-white">
+                <div className="flex h-full w-full items-center justify-center bg-[linear-gradient(180deg,#5f79b5,#c6cde2)] px-4 text-center text-lg font-bold text-white sm:px-6 sm:text-xl md:px-8">
                   {book?.title ?? "اسم الكتاب"}
                 </div>
               )}
             </div>
           </div>
 
-          <div className="rounded-xl bg-white px-6 py-5 shadow-[0_8px_20px_rgba(0,0,0,0.12)] md:px-8">
-            <h1 className="mb-5 text-right text-3xl font-bold text-[#0d6f95] md:text-4xl">
+          <div className="min-w-0 rounded-xl bg-white px-4 py-5 shadow-[0_8px_20px_rgba(0,0,0,0.12)] sm:px-6 md:px-8">
+            <h1 className="mb-5 text-right text-2xl font-bold text-[#0d6f95] sm:text-3xl md:text-4xl">
               {book?.title ?? "اسم الكتاب"}
             </h1>
 
-            <div className="mb-5 flex flex-wrap justify-end gap-4">
+            <div className="mb-5 flex flex-wrap justify-end gap-3 gap-y-2">
               <a
                 href={book?.pdfUrl || "#"}
                 target={book?.pdfUrl ? "_blank" : undefined}
                 rel={book?.pdfUrl ? "noreferrer" : undefined}
-                className="inline-flex min-w-40 items-center justify-center gap-2 rounded-xl bg-[#f1f1f1] px-5 py-2 text-sm text-[#0d6f95] shadow"
+                className="inline-flex min-w-0 flex-1 items-center justify-center gap-2 rounded-xl bg-[#f1f1f1] px-4 py-2 text-sm text-[#0d6f95] shadow sm:min-w-[10rem] sm:flex-none"
               >
                 <ReadIcon className="size-4" />
                 تصفح الكتاب
@@ -122,7 +122,7 @@ export default function BookDetailPage() {
                 href={book?.pdfUrl || "#"}
                 target={book?.pdfUrl ? "_blank" : undefined}
                 rel={book?.pdfUrl ? "noreferrer" : undefined}
-                className="inline-flex min-w-40 items-center justify-center gap-2 rounded-xl bg-[#f1f1f1] px-5 py-2 text-sm text-[#0d6f95] shadow"
+                className="inline-flex min-w-0 flex-1 items-center justify-center gap-2 rounded-xl bg-[#f1f1f1] px-4 py-2 text-sm text-[#0d6f95] shadow sm:min-w-[10rem] sm:flex-none"
               >
                 <DownloadIcon className="size-4" />
                 تحميل الكتاب
@@ -142,9 +142,9 @@ export default function BookDetailPage() {
         <FanDivider />
       </section>
 
-      <section className="px-6 py-12">
+      <section className="px-4 py-10 sm:px-6 sm:py-12">
         <div className="mx-auto max-w-6xl">
-          <h2 className="mb-8 text-center text-3xl font-bold text-[#0d6f95]">
+          <h2 className="mb-6 text-center text-2xl font-bold text-[#0d6f95] sm:mb-8 sm:text-3xl">
             منشورات ذات صلة
           </h2>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -169,7 +169,7 @@ export default function BookDetailPage() {
         </div>
       </section>
 
-      <section className="px-6 pb-12 pt-4">
+      <section className="px-4 pb-12 pt-4 sm:px-6">
         <div className="mx-auto max-w-6xl">
           <p className="mb-2 text-right text-sm text-[#0d6f95]">أضف تعليقاً</p>
           <form className="space-y-5">

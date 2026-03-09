@@ -70,9 +70,9 @@ export default function WorksPage() {
           </div>
         </section>
 
-        <section className="px-4 pb-16 pt-10 md:px-8">
+        <section className="px-4 pb-14 pt-8 sm:pt-10 md:px-8 md:pb-16">
           <div className="mx-auto max-w-7xl">
-            <h1 className="mb-8 text-center text-2xl font-bold text-[#0b6d92] md:text-3xl">
+            <h1 className="mb-6 text-center text-xl font-bold text-[#0b6d92] sm:mb-8 sm:text-2xl md:text-3xl">
               الكتب والروايات
             </h1>
 
@@ -85,7 +85,7 @@ export default function WorksPage() {
                 >
                   <div className="flex items-end justify-center gap-3">
                     <BookStack />
-                    <div className="w-[122px] shrink-0">
+                    <div className="w-[100px] shrink-0 sm:w-[122px]">
                       <div className="aspect-[3/4] overflow-hidden rounded-[2px] bg-white shadow-[0_8px_18px_rgba(0,0,0,0.14)]">
                         {book.imageUrl ? (
                           // eslint-disable-next-line @next/next/no-img-element

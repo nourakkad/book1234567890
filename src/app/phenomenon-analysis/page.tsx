@@ -72,7 +72,7 @@ export default function PhenomenonAnalysisPage() {
       <main className="bg-[#faf8f5]">
         <section className="px-4 pb-16 pt-10 md:px-8">
           <div className="mx-auto max-w-6xl">
-            <h1 className="mb-2 text-center text-2xl font-bold text-[#1e3a5f] md:text-3xl">
+            <h1 className="mb-2 text-center text-xl font-bold text-[#1e3a5f] sm:text-2xl md:text-3xl">
               {content.title ?? "تحليل الظاهرة"}
             </h1>
             {content.description ? (
@@ -110,7 +110,7 @@ export default function PhenomenonAnalysisPage() {
 
             {/* Pagination - dark blue bar with numbers and arrows */}
             {totalPages > 1 ? (
-              <div className="mt-10 flex items-center justify-center gap-1 rounded-lg bg-[#0d5f84] px-4 py-3">
+              <div className="mt-10 flex flex-wrap items-center justify-center gap-1 rounded-lg bg-[#0d5f84] px-3 py-3 sm:px-4">
                 <button
                   type="button"
                   onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}

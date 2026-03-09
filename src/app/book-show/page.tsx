@@ -68,9 +68,9 @@ export default function BookShowPage() {
     <div className="min-h-screen bg-[#faf8f5]">
       <Header />
 
-      <section className="px-6 py-12">
+      <section className="px-4 py-10 sm:px-6 sm:py-12">
         <div className="mx-auto max-w-6xl">
-          <h1 className="mb-2 text-center text-2xl font-bold text-[#1e3a5f] md:text-3xl">
+          <h1 className="mb-2 text-center text-xl font-bold text-[#1e3a5f] sm:text-2xl md:text-3xl">
             {bookShowContent.title ?? "عرض الكتاب"}
           </h1>
           {bookShowContent.description ? (
@@ -115,7 +115,7 @@ export default function BookShowPage() {
                 </Link>
                 <Link
                   href={`/books/${book.id}`}
-                  className="mt-2 inline-block rounded-lg bg-[#0d5f84] px-6 py-2.5 text-center text-sm font-medium text-white transition hover:bg-[#0a4d6d]"
+                  className="mt-2 inline-block w-full rounded-lg bg-[#0d5f84] px-4 py-2.5 text-center text-sm font-medium text-white transition hover:bg-[#0a4d6d] sm:w-auto sm:px-6"
                 >
                   انقر هنا لعرض الكتاب
                 </Link>

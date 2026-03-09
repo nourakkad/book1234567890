@@ -65,11 +65,11 @@ export default function ArticlePage() {
       <Header />
 
       {/* Article header: title, date, thumbs */}
-      <section className="border-b border-[#e5e0d8] bg-white px-6 py-8">
+      <section className="border-b border-[#e5e0d8] bg-white px-4 py-6 sm:px-6 sm:py-8">
         <div className="mx-auto max-w-6xl">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>
-              <h1 className="mb-2 text-3xl font-bold text-[#1e3a5f] md:text-4xl">
+              <h1 className="mb-2 text-2xl font-bold text-[#1e3a5f] sm:text-3xl md:text-4xl">
                 {article.title}
               </h1>
               <p className="text-[#1e3a5f]/80">{article.date}</p>
@@ -87,7 +87,7 @@ export default function ArticlePage() {
       </section>
 
       {/* Main article content: image left, text right (RTL so image is on right in layout) */}
-      <section className="px-6 py-12">
+      <section className="px-4 py-10 sm:px-6 sm:py-12">
         <div className="mx-auto max-w-6xl">
           <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
             <div className="order-2 lg:order-1">
@@ -115,7 +115,7 @@ export default function ArticlePage() {
       </section>
 
       {/* Secondary section: text left, image right */}
-      <section className="bg-[#faf8f5] px-6 py-12">
+      <section className="bg-[#faf8f5] px-4 py-10 sm:px-6 sm:py-12">
         <div className="mx-auto max-w-6xl">
           <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
             <div>

@@ -39,7 +39,7 @@ function renderDescription(text: string) {
       return (
         <h2
           key={i}
-          className="mb-4 mt-8 text-xl font-bold text-[#1e3a5f] first:mt-0"
+          className="mb-4 mt-8 text-lg font-bold text-[#1e3a5f] first:mt-0 sm:text-xl"
         >
           {lines[0].replace(/^##\s*/, "")}
         </h2>
@@ -70,7 +70,7 @@ function renderDescription(text: string) {
       return (
         <h2
           key={i}
-          className="mb-4 mt-8 text-xl font-bold text-[#1e3a5f] first:mt-0"
+          className="mb-4 mt-8 text-lg font-bold text-[#1e3a5f] first:mt-0 sm:text-xl"
         >
           {lines[0]}
         </h2>
@@ -109,7 +109,7 @@ export default function PhenomenonDetailPage() {
     return (
       <div className="min-h-screen bg-[#faf8f5]">
         <Header />
-        <main className="px-6 py-16 text-center">
+        <main className="px-4 py-12 text-center sm:px-6 sm:py-16">
           <p className="text-[#1e3a5f]">التحليل غير موجود.</p>
           <Link
             href="/phenomenon-analysis"
@@ -136,7 +136,7 @@ export default function PhenomenonDetailPage() {
             ← العودة لتحليل الظاهرة
           </Link>
 
-          <h1 className="mb-10 text-2xl font-bold text-[#1e3a5f] md:text-3xl">
+          <h1 className="mb-8 text-xl font-bold text-[#1e3a5f] sm:mb-10 sm:text-2xl md:text-3xl">
             {item.title ?? "تحليل الظاهرة"}
           </h1>
 

@@ -56,9 +56,9 @@ export default function VideosPage() {
           <FanDivider />
         </section>
 
-        <section className="px-6 pb-14 pt-10">
+        <section className="px-4 pb-14 pt-8 sm:px-6 sm:pt-10">
           <div className="mx-auto max-w-6xl">
-            <h1 className="mb-8 text-center text-3xl font-bold text-[#0d6f95]">
+            <h1 className="mb-6 text-center text-2xl font-bold text-[#0d6f95] sm:mb-8 sm:text-3xl">
               {content.title ?? "الفيديوهات"}
             </h1>
 

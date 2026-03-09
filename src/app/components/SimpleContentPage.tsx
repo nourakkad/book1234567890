@@ -26,12 +26,12 @@ export default function SimpleContentPage({
   return (
     <div className="min-h-screen bg-[#faf8f5]">
       <Header />
-      <main className="px-6 py-16">
-        <div className="mx-auto max-w-5xl rounded-[28px] border border-[#ddd2c4] bg-white p-8 shadow-sm md:p-12">
+      <main className="px-4 py-12 sm:px-6 sm:py-16">
+        <div className="mx-auto max-w-5xl rounded-2xl border border-[#ddd2c4] bg-white p-5 shadow-sm sm:rounded-[28px] sm:p-8 md:p-12">
           <span className="mb-4 inline-flex rounded-full bg-[#e8f0f4] px-4 py-2 text-sm text-[#05698e]">
             صفحة جديدة
           </span>
-          <h1 className="mb-4 text-3xl font-bold text-[#1e3a5f] md:text-4xl">
+          <h1 className="mb-4 text-2xl font-bold text-[#1e3a5f] sm:text-3xl md:text-4xl">
             {content.title ?? fallbackTitle}
           </h1>
           <p className="max-w-3xl leading-8 text-[#1e3a5f]/80">

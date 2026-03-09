@@ -86,13 +86,13 @@ export default function QuestionsPage() {
         {/* Top section: form */}
         <section className="px-4 pb-14 pt-10 md:px-8">
           <div className="mx-auto max-w-2xl">
-            <h1 className="mb-10 text-center text-3xl font-bold text-[#1e3a5f]">
+            <h1 className="mb-6 text-center text-xl font-bold text-[#1e3a5f] sm:mb-8 sm:text-2xl md:mb-10 md:text-3xl">
               {content.title ?? "الاسئلة و الأجوبة"}
             </h1>
 
             <form
               onSubmit={handleSubmit}
-              className="rounded-2xl border border-[#ddd2c4] bg-white p-6 shadow-sm md:p-8"
+              className="rounded-2xl border border-[#ddd2c4] bg-white p-4 shadow-sm sm:p-6 md:p-8"
             >
               <div className="mb-4">
                 <label

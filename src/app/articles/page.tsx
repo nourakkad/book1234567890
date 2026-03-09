@@ -83,9 +83,9 @@ export default function ArticlesPage() {
           </div>
         </section>
 
-        <section className="px-6 py-10">
+        <section className="px-4 py-8 sm:px-6 sm:py-10">
           <div className="mx-auto max-w-6xl">
-            <h1 className="mb-8 text-center text-3xl font-bold text-[#0d6f95]">
+            <h1 className="mb-6 text-center text-2xl font-bold text-[#0d6f95] sm:mb-8 sm:text-3xl">
               {content.title ?? "المنشورات والمقالات"}
             </h1>
 
@@ -130,9 +130,9 @@ export default function ArticlesPage() {
           <FanDivider />
         </section>
 
-        <section className="px-6 pb-14 pt-10">
+        <section className="px-4 pb-14 pt-8 sm:px-6 sm:pt-10">
           <div className="mx-auto max-w-6xl">
-            <h2 className="mb-8 text-center text-3xl font-bold text-[#0d6f95]">
+            <h2 className="mb-6 text-center text-2xl font-bold text-[#0d6f95] sm:mb-8 sm:text-3xl">
               أحدث المنشورات
             </h2>
 
@@ -145,7 +145,7 @@ export default function ArticlesPage() {
                         // eslint-disable-next-line @next/next/no-img-element
                         <img src={item.imageUrl} alt={item.title ?? ""} className="h-full w-full object-cover" />
                       ) : (
-                        <div className="flex h-full w-full items-start justify-end bg-[radial-gradient(circle_at_top_left,_#0c203f_0%,_#321d52_18%,_#5b1e55_36%,_#294f7a_62%,_#111827_100%)] p-4 text-right text-2xl font-bold text-white">
+                        <div className="flex h-full w-full items-start justify-end bg-[radial-gradient(circle_at_top_left,_#0c203f_0%,_#321d52_18%,_#5b1e55_36%,_#294f7a_62%,_#111827_100%)] p-3 text-right text-lg font-bold text-white sm:p-4 sm:text-xl md:text-2xl">
                           {item.title ?? `منشور ${id}`}
                         </div>
                       )}

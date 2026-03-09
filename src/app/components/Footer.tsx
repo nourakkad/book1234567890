@@ -80,10 +80,10 @@ export default function Footer() {
         <div className="absolute inset-x-[-8%] bottom-[-24px] h-24 rounded-[100%] bg-[#e8f0f5]" />
       </div>
 
-      <div className="mx-auto max-w-6xl px-6 pb-6 pt-10">
-        <div className="grid gap-10 md:grid-cols-[1.2fr_1fr_1fr_220px] md:items-end">
+      <div className="mx-auto max-w-6xl px-4 pb-6 pt-8 sm:px-6 sm:pt-10">
+        <div className="grid gap-8 sm:gap-10 md:grid-cols-[1.2fr_1fr_1fr_220px] md:items-end">
           <div className="text-right">
-            <h3 className="mb-4 text-lg font-bold">{content?.siteTitle ?? "اسم الكاتب"}</h3>
+            <h3 className="mb-3 text-base font-bold sm:mb-4 sm:text-lg">{content?.siteTitle ?? "اسم الكاتب"}</h3>
             <p className="max-w-sm text-sm leading-7 text-white/90">
               {content?.siteDescription ??
                 "باحث وكاتب يهتم بنشر المعرفة والفكر، مع عناية بالمحتوى العربي والإسلامي في قالب واضح ومؤثر."}
@@ -114,10 +114,10 @@ export default function Footer() {
           </div>
 
           <div className="flex flex-col items-center gap-4 md:items-end">
-            <div className="flex h-24 w-24 items-center justify-center rounded-full bg-white text-center text-xs font-semibold text-[#05698e] shadow-md">
+            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-white text-center text-[10px] font-semibold text-[#05698e] shadow-md sm:h-24 sm:w-24 sm:text-xs">
               شعار
             </div>
-            <div className="h-28 w-24 overflow-hidden rounded bg-white/20 shadow-md">
+            <div className="h-24 w-20 overflow-hidden rounded bg-white/20 shadow-md sm:h-28 sm:w-24">
               {about?.authorImageUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={about.authorImageUrl} alt="صورة الكاتب" className="h-full w-full object-cover" />
@@ -130,7 +130,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-8 flex flex-col items-center justify-between gap-4 border-t border-white/20 pt-5 md:flex-row">
+        <div className="mt-6 flex flex-col items-center justify-between gap-4 border-t border-white/20 pt-5 sm:mt-8 md:flex-row">
           <div className="text-sm text-white/80">
             {footer?.copyright ?? "جميع الحقوق محفوظة للباحث سامر اسمويل © 2026"}
           </div>

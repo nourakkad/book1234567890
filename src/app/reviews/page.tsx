@@ -26,9 +26,9 @@ export default function ReviewsPage() {
     <div className="min-h-screen bg-white">
       <Header />
 
-      <section className="px-6 py-16">
+      <section className="px-4 py-12 sm:px-6 sm:py-16">
         <div className="mx-auto max-w-3xl">
-          <h1 className="mb-10 text-center text-3xl font-bold text-[#1e3a5f] md:text-4xl">
+          <h1 className="mb-8 text-center text-2xl font-bold text-[#1e3a5f] sm:mb-10 sm:text-3xl md:text-4xl">
             {reviewsContent.title ?? "ماذا يقول القراء؟"}
           </h1>
 
@@ -36,7 +36,7 @@ export default function ReviewsPage() {
             {(reviewsContent.items && reviewsContent.items.length > 0
               ? reviewsContent.items
               : REVIEWS).map((review, i) => (
-              <div key={i} className="rounded-2xl bg-[#eeeae4] px-7 py-6">
+              <div key={i} className="rounded-2xl bg-[#eeeae4] px-4 py-5 sm:px-7 sm:py-6">
                 {/* Large quote mark */}
                 <div className="mb-4 text-right">
                   <svg width="34" height="27" viewBox="0 0 38 30" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -230,14 +230,14 @@ export default function AdminPage() {
   }
 
   if (checking) {
-    return <div className="p-8 text-[#1e3a5f]">جاري التحميل...</div>;
+    return <div className="p-6 text-[#1e3a5f] sm:p-8">جاري التحميل...</div>;
   }
 
   if (!authenticated) {
     return (
-      <main className="mx-auto max-w-md px-6 py-16">
-        <h1 className="mb-6 text-2xl font-bold text-[#1e3a5f]">لوحة التحكم</h1>
-        <div className="rounded-xl border border-[#e5e0d8] bg-white p-6">
+      <main className="mx-auto max-w-md px-4 py-12 sm:px-6 sm:py-16">
+        <h1 className="mb-6 text-xl font-bold text-[#1e3a5f] sm:text-2xl">لوحة التحكم</h1>
+        <div className="rounded-xl border border-[#e5e0d8] bg-white p-4 sm:p-6">
           <label className="mb-2 block text-sm text-[#1e3a5f]">كلمة مرور الإدارة</label>
           <input
             type="password"
@@ -259,29 +259,29 @@ export default function AdminPage() {
   }
 
   return (
-    <main className="mx-auto max-w-6xl px-6 py-10">
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-[#1e3a5f]">لوحة التحكم بالمحتوى</h1>
-        <div className="flex items-center gap-2">
+    <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-10">
+      <div className="mb-4 flex flex-col gap-4 sm:mb-6 sm:flex-row sm:items-center sm:justify-between">
+        <h1 className="text-xl font-bold text-[#1e3a5f] sm:text-2xl">لوحة التحكم بالمحتوى</h1>
+        <div className="flex flex-wrap items-center gap-2">
           <button
             type="button"
             onClick={seedDefaults}
-            className="rounded-lg border border-[#d6cfc4] px-4 py-2 text-[#1e3a5f]"
+            className="rounded-lg border border-[#d6cfc4] px-3 py-2 text-sm text-[#1e3a5f] sm:px-4 sm:text-base"
           >
             تهيئة البيانات
           </button>
           <button
             type="button"
             onClick={logout}
-            className="rounded-lg border border-[#d6cfc4] px-4 py-2 text-[#1e3a5f]"
+            className="rounded-lg border border-[#d6cfc4] px-3 py-2 text-sm text-[#1e3a5f] sm:px-4 sm:text-base"
           >
             تسجيل الخروج
           </button>
         </div>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-[260px_1fr]">
-        <aside className="rounded-xl border border-[#e5e0d8] bg-white p-4">
+      <div className="grid gap-4 md:grid-cols-[260px_1fr]">
+        <aside className="overflow-x-auto rounded-xl border border-[#e5e0d8] bg-white p-3 sm:p-4">
           <p className="mb-3 text-sm font-semibold text-[#1e3a5f]">الصفحات</p>
           <div className="flex flex-col gap-2">
             {prettySlugs.map((slug) => (
@@ -305,10 +305,10 @@ export default function AdminPage() {
           </div>
         </aside>
 
-        <section className="rounded-xl border border-[#e5e0d8] bg-white p-4">
-          <div className="mb-3 flex items-center justify-between">
-            <p className="text-sm font-semibold text-[#1e3a5f]">تحرير: {selectedSlug}</p>
-            <div className="flex items-center gap-2">
+        <section className="min-w-0 overflow-x-auto rounded-xl border border-[#e5e0d8] bg-white p-3 sm:p-4">
+          <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <p className="truncate text-sm font-semibold text-[#1e3a5f]">تحرير: {selectedSlug}</p>
+            <div className="flex shrink-0 items-center gap-2">
               <button
                 type="button"
                 onClick={() => setEditorMode("form")}
@@ -336,7 +336,7 @@ export default function AdminPage() {
           </div>
 
           {editorMode === "form" && canUseForm ? (
-            <div className="space-y-4">
+            <div className="space-y-4 overflow-x-auto">
               {selectedSlug === "global" ? (
                 <>
                   <LabeledInput
@@ -571,7 +571,7 @@ export default function AdminPage() {
                   />
 
                   <div className="mt-4 rounded-lg border border-[#e5e0d8] p-3">
-                    <div className="mb-3 flex items-center justify-between">
+                    <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
                       <p className="text-sm font-semibold text-[#1e3a5f]">عناصر الكتب</p>
                       <button
                         type="button"
@@ -606,7 +606,7 @@ export default function AdminPage() {
                         const relatedIds = Array.isArray(item.relatedIds) ? item.relatedIds.join(", ") : "";
                         return (
                           <div key={index} className="rounded-lg border border-[#e5e0d8] p-3">
-                            <div className="mb-2 flex items-center justify-between">
+                            <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
                               <p className="text-sm font-semibold text-[#1e3a5f]">كتاب #{index + 1}</p>
                               <button
                                 type="button"
@@ -711,7 +711,7 @@ export default function AdminPage() {
                   />
 
                   <div className="mt-4 rounded-lg border border-[#e5e0d8] p-3">
-                    <div className="mb-3 flex items-center justify-between">
+                    <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
                       <p className="text-sm font-semibold text-[#1e3a5f]">المراجعات</p>
                       <button
                         type="button"
@@ -732,7 +732,7 @@ export default function AdminPage() {
                         const item = isObject(rawItem) ? rawItem : {};
                         return (
                           <div key={index} className="rounded-lg border border-[#e5e0d8] p-3">
-                            <div className="mb-2 flex items-center justify-between">
+                            <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
                               <p className="text-sm font-semibold text-[#1e3a5f]">مراجعة #{index + 1}</p>
                               <button
                                 type="button"
@@ -781,7 +781,7 @@ export default function AdminPage() {
                   />
 
                   <div className="rounded-lg border border-[#e5e0d8] p-3">
-                    <div className="mb-3 flex items-center justify-between">
+                    <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
                       <p className="text-sm font-semibold text-[#1e3a5f]">التصنيفات</p>
                       <button
                         type="button"
@@ -803,8 +803,8 @@ export default function AdminPage() {
                         const featuredIds = Array.isArray(item.featuredIds) ? item.featuredIds.join(", ") : "";
                         return (
                           <div key={index} className="rounded-lg border border-[#e5e0d8] p-3">
-                            <div className="mb-2 flex items-center justify-between">
-                              <p className="text-sm font-semibold text-[#1e3a5f]">تصنيف #{index + 1}</p>
+                            <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+                                <p className="text-sm font-semibold text-[#1e3a5f]">تصنيف #{index + 1}</p>
                               <button
                                 type="button"
                                 onClick={() => removeTopArrayItem("categories", index)}
@@ -844,7 +844,7 @@ export default function AdminPage() {
                   </div>
 
                   <div className="rounded-lg border border-[#e5e0d8] p-3">
-                    <div className="mb-3 flex items-center justify-between">
+                    <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
                       <p className="text-sm font-semibold text-[#1e3a5f]">عناصر المقالات</p>
                       <button
                         type="button"
@@ -879,7 +879,7 @@ export default function AdminPage() {
                           const item = isObject(rawItem) ? rawItem : {};
                           return (
                             <div key={id} className="rounded-lg border border-[#e5e0d8] p-3">
-                              <div className="mb-2 flex items-center justify-between">
+                              <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
                                 <p className="text-sm font-semibold text-[#1e3a5f]">مقال #{id}</p>
                                 <button
                                   type="button"
@@ -972,7 +972,7 @@ export default function AdminPage() {
                   />
 
                   <div className="rounded-lg border border-[#e5e0d8] p-3">
-                    <div className="mb-3 flex items-center justify-between">
+                    <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
                       <p className="text-sm font-semibold text-[#1e3a5f]">عناصر الفيديوهات</p>
                       <button
                         type="button"
@@ -995,7 +995,7 @@ export default function AdminPage() {
                         const item = isObject(rawItem) ? rawItem : {};
                         return (
                           <div key={index} className="rounded-lg border border-[#e5e0d8] p-3">
-                            <div className="mb-2 flex items-center justify-between">
+                            <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
                               <p className="text-sm font-semibold text-[#1e3a5f]">فيديو #{index + 1}</p>
                               <button
                                 type="button"
@@ -1059,7 +1059,7 @@ export default function AdminPage() {
                   />
 
                   <div className="rounded-lg border border-[#e5e0d8] p-3">
-                    <div className="mb-3 flex items-center justify-between">
+                    <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
                       <p className="text-sm font-semibold text-[#1e3a5f]">عناصر الخواطر</p>
                       <button
                         type="button"
@@ -1079,7 +1079,7 @@ export default function AdminPage() {
                         const item = isObject(rawItem) ? rawItem : {};
                         return (
                           <div key={index} className="rounded-lg border border-[#e5e0d8] p-3">
-                            <div className="mb-2 flex items-center justify-between">
+                            <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
                               <p className="text-sm font-semibold text-[#1e3a5f]">خاطرة #{index + 1}</p>
                               <button
                                 type="button"
@@ -1117,7 +1117,7 @@ export default function AdminPage() {
                   />
 
                   <div className="rounded-lg border border-[#e5e0d8] p-3">
-                    <div className="mb-3 flex items-center justify-between">
+                    <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
                       <p className="text-sm font-semibold text-[#1e3a5f]">عناصر الكتب الصوتية</p>
                       <button
                         type="button"
@@ -1146,8 +1146,8 @@ export default function AdminPage() {
                         const item = isObject(rawItem) ? rawItem : {};
                         return (
                           <div key={index} className="rounded-lg border border-[#e5e0d8] p-3">
-                            <div className="mb-2 flex items-center justify-between">
-                              <p className="text-sm font-semibold text-[#1e3a5f]">
+                            <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+                              <p className="min-w-0 truncate text-sm font-semibold text-[#1e3a5f]">
                                 كتاب صوتي #{index + 1} (معرّف: {String(item.id ?? index + 1)})
                               </p>
                               <button
@@ -1257,14 +1257,15 @@ export default function AdminPage() {
                             bookItems.map((b) => (
                               <label
                                 key={b.id}
-                                className="flex cursor-pointer items-center gap-2 rounded-lg border border-[#d6cfc4] px-3 py-2 text-sm text-[#1e3a5f] hover:bg-[#faf8f5]"
+                                className="flex min-w-0 cursor-pointer items-center gap-2 rounded-lg border border-[#d6cfc4] px-3 py-2 text-sm text-[#1e3a5f] hover:bg-[#faf8f5]"
                               >
                                 <input
                                   type="checkbox"
                                   checked={selectedIds.includes(b.id)}
                                   onChange={() => toggleBookId(b.id)}
+                                  className="shrink-0"
                                 />
-                                <span>
+                                <span className="min-w-0 truncate">
                                   {b.title ?? `كتاب #${b.id}`} (معرّف: {b.id})
                                 </span>
                               </label>
@@ -1290,7 +1291,7 @@ export default function AdminPage() {
                     onChange={(v) => updateTopLevelField("description", v)}
                   />
                   <div className="rounded-lg border border-[#e5e0d8] p-3">
-                    <div className="mb-3 flex items-center justify-between">
+                    <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
                       <p className="text-sm font-semibold text-[#1e3a5f]">عناصر تحليل الظاهرة</p>
                       <button
                         type="button"
@@ -1317,8 +1318,8 @@ export default function AdminPage() {
                         const item = isObject(rawItem) ? rawItem : {};
                         return (
                           <div key={index} className="rounded-lg border border-[#e5e0d8] p-3">
-                            <div className="mb-2 flex items-center justify-between">
-                              <p className="text-sm font-semibold text-[#1e3a5f]">
+                            <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+                              <p className="min-w-0 truncate text-sm font-semibold text-[#1e3a5f]">
                                 تحليل #{index + 1} (معرّف: {String(item.id ?? index + 1)})
                               </p>
                               <button
@@ -1381,7 +1382,7 @@ export default function AdminPage() {
                     onChange={(v) => updateTopLevelField("description", v)}
                   />
                   <div className="rounded-lg border border-[#e5e0d8] p-3">
-                    <div className="mb-3 flex items-center justify-between">
+                    <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
                       <p className="text-sm font-semibold text-[#1e3a5f]">عناصر الأسئلة والأجوبة</p>
                       <button
                         type="button"
@@ -1407,8 +1408,8 @@ export default function AdminPage() {
                         const item = isObject(rawItem) ? rawItem : {};
                         return (
                           <div key={index} className="rounded-lg border border-[#e5e0d8] p-3">
-                            <div className="mb-2 flex items-center justify-between">
-                              <p className="text-sm font-semibold text-[#1e3a5f]">
+                            <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+                              <p className="min-w-0 truncate text-sm font-semibold text-[#1e3a5f]">
                                 سؤال #{index + 1} (معرّف: {String(item.id ?? index + 1)})
                               </p>
                               <button
@@ -1447,13 +1448,13 @@ export default function AdminPage() {
               <textarea
                 value={jsonValue}
                 onChange={(e) => setJsonValue(e.target.value)}
-                className="min-h-[420px] w-full rounded-lg border border-[#d6cfc4] p-3 font-mono text-sm outline-none focus:border-[#1e3a5f]"
+                className="min-h-[280px] w-full max-w-full rounded-lg border border-[#d6cfc4] p-3 font-mono text-sm outline-none focus:border-[#1e3a5f] sm:min-h-[420px]"
                 dir="ltr"
               />
             </div>
           )}
 
-          <div className="mt-4 flex items-center gap-3">
+          <div className="mt-4 flex flex-wrap items-center gap-3">
             <button
               type="button"
               onClick={save}
@@ -1487,7 +1488,7 @@ function LabeledInput({
       <input
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-lg border border-[#d6cfc4] px-3 py-2 outline-none focus:border-[#1e3a5f]"
+        className="min-w-0 w-full max-w-full rounded-lg border border-[#d6cfc4] px-3 py-2 outline-none focus:border-[#1e3a5f]"
       />
     </label>
   );
@@ -1508,7 +1509,7 @@ function LabeledTextarea({
       <textarea
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="min-h-24 w-full rounded-lg border border-[#d6cfc4] px-3 py-2 outline-none focus:border-[#1e3a5f]"
+        className="min-h-24 min-w-0 w-full max-w-full rounded-lg border border-[#d6cfc4] px-3 py-2 outline-none focus:border-[#1e3a5f]"
       />
     </label>
   );
@@ -1569,7 +1570,7 @@ function FileUploadField({
   uploadLabel: string;
 }) {
   return (
-    <div className="rounded-lg border border-[#e5e0d8] p-3">
+    <div className="min-w-0 rounded-lg border border-[#e5e0d8] p-3">
       <div className="mb-2">
         <span className="text-sm text-[#1e3a5f]">{label}</span>
       </div>
@@ -1577,7 +1578,7 @@ function FileUploadField({
       <input
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="mb-2 w-full rounded-lg border border-[#d6cfc4] px-3 py-2 text-sm outline-none focus:border-[#1e3a5f]"
+        className="mb-2 min-w-0 w-full max-w-full rounded-lg border border-[#d6cfc4] px-3 py-2 text-sm outline-none focus:border-[#1e3a5f]"
         dir="ltr"
       />
 

@@ -3,6 +3,18 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
+const MOBILE_NAV_LINKS = [
+  { href: "/", key: "home" },
+  { href: "/works", key: "works" },
+  { href: "/articles", key: "articles" },
+  { href: "/videos", key: "videos" },
+  { href: "/thoughts", key: "thoughts" },
+  { href: "/contact", key: "contact" },
+  { href: "/audio-books", key: "audioBooks" },
+  { href: "/book-show", key: "bookShow" },
+  { href: "/phenomenon-analysis", key: "phenomenonAnalysis" },
+] as const;
+
 function DropdownArrowIcon() {
   return (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -38,8 +50,28 @@ type GlobalContent = {
   };
 };
 
+function MenuIcon() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <line x1="3" y1="6" x2="21" y2="6" />
+      <line x1="3" y1="12" x2="21" y2="12" />
+      <line x1="3" y1="18" x2="21" y2="18" />
+    </svg>
+  );
+}
+
+function CloseIcon() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M18 6 6 18" />
+      <path d="m6 6 12 12" />
+    </svg>
+  );
+}
+
 export default function Header() {
   const [content, setContent] = useState<GlobalContent | null>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     void fetch("/api/content/global")
@@ -52,14 +84,26 @@ export default function Header() {
 
   const nav = content?.nav;
 
+  const navLabels: Record<string, string> = {
+    home: nav?.home ?? "الصفحة الرئيسية",
+    works: nav?.works ?? "مؤلفاتي",
+    articles: nav?.articles ?? "المنشورات",
+    videos: nav?.videos ?? "الفيديوهات",
+    thoughts: nav?.thoughts ?? "خواطر",
+    contact: nav?.contact ?? "تواصل معنا",
+    audioBooks: nav?.audioBooks ?? "الكتب الصوتية",
+    bookShow: nav?.bookShow ?? "عرض الكتاب",
+    phenomenonAnalysis: nav?.phenomenonAnalysis ?? "تحليل الظاهرة",
+  };
+
   return (
     <header className="bg-[#05698e] text-white shadow-sm">
-      <nav dir="ltr" className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-4 lg:px-6">
+      <nav dir="ltr" className="mx-auto flex max-w-7xl items-center gap-2 px-3 py-3 sm:gap-4 sm:px-4 sm:py-4 lg:px-6">
         <Link href="/" className="shrink-0 text-sm font-semibold tracking-wide text-white">
           {nav?.logoText ?? "LOGO HERE"}
         </Link>
 
-        <div className="hidden shrink-0 items-center gap-3 md:flex">
+        <div className="hidden shrink-0 items-center gap-2 sm:gap-3 md:flex">
           <button
             type="button"
             aria-label="بحث"
@@ -110,29 +154,50 @@ export default function Header() {
           <button
             type="button"
             aria-label="بحث"
-            className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/95 text-[#05698e]"
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-white/95 text-[#05698e]"
           >
             <SearchIcon />
           </button>
           <Link
             href="/questions"
-            className="rounded-xl bg-white px-4 py-2 text-sm font-medium text-[#5b4a3b]"
+            className="hidden shrink-0 rounded-xl bg-white px-3 py-2 text-xs font-medium text-[#5b4a3b] sm:inline-flex sm:px-4 sm:text-sm"
           >
             {nav?.questions ?? "أسئلة وأجوبة"}
           </Link>
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen((o) => !o)}
+            aria-label={mobileMenuOpen ? "إغلاق القائمة" : "فتح القائمة"}
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/95 text-[#05698e] transition hover:bg-white"
+          >
+            {mobileMenuOpen ? <CloseIcon /> : <MenuIcon />}
+          </button>
         </div>
       </nav>
-      <div dir="rtl" className="flex flex-wrap items-center justify-end gap-x-4 gap-y-2 px-4 pb-3 text-xs text-white/90 lg:hidden">
-        <Link href="/">{nav?.home ?? "الصفحة الرئيسية"}</Link>
-        <Link href="/works">{nav?.works ?? "مؤلفاتي"}</Link>
-        <Link href="/articles">{nav?.articles ?? "المنشورات"}</Link>
-        <Link href="/videos">{nav?.videos ?? "الفيديوهات"}</Link>
-        <Link href="/thoughts">{nav?.thoughts ?? "خواطر"}</Link>
-        <Link href="/contact">{nav?.contact ?? "تواصل معنا"}</Link>
-        <Link href="/audio-books">{nav?.audioBooks ?? "الكتب الصوتية"}</Link>
-        <Link href="/book-show">{nav?.bookShow ?? "عرض الكتاب"}</Link>
-        <Link href="/phenomenon-analysis">{nav?.phenomenonAnalysis ?? "تحليل الظاهرة"}</Link>
-      </div>
+      {/* Mobile dropdown menu */}
+      {mobileMenuOpen ? (
+        <div dir="rtl" className="border-t border-white/20 bg-[#045f84] px-4 py-4 lg:hidden">
+          <div className="flex flex-col gap-1">
+            <Link
+              href="/questions"
+              className="block rounded-lg px-3 py-2.5 text-sm text-white hover:bg-white/10 sm:hidden"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              {nav?.questions ?? "أسئلة وأجوبة"}
+            </Link>
+            {MOBILE_NAV_LINKS.map(({ href, key }) => (
+              <Link
+                key={key}
+                href={href}
+                className="block rounded-lg px-3 py-2.5 text-sm text-white transition hover:bg-white/10"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {navLabels[key]}
+              </Link>
+            ))}
+          </div>
+        </div>
+      ) : null}
     </header>
   );
 }
